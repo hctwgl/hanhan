@@ -455,7 +455,12 @@
       <!-- 伴奏播放控件 -->
       <div class="music-widget">
         <button class="play-btn" id="play-btn" onclick="togglePlay()">▶</button>
-        <span class="music-info" id="music-title">🎵 伴奏：《月之故乡》 (刘庄、延生曲)</span>
+        <select id="bgm-select" onchange="changeBGM(this.value)" style="border:none; background:transparent; font-size:12.5px; font-weight:700; color:var(--text-dark); cursor:pointer; outline:none; padding-right:15px; appearance:none; background: url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%232c3e50\' stroke-width=\'2.5\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Cpath d=\'m6 9 6 6 6-6\'/%3E%3C/svg%3E') no-repeat right center; background-size: 10px;">
+          <option value="yue_zhi_gu_xiang.mp3">🎵 默认伴奏：《月之故乡》B站原声 (极力推荐)</option>
+          <option value="https://music.163.com/song/media/outer/url?id=5256241.mp3">🎵 备用 1：舒曼《梦幻曲》 (极致安静)</option>
+          <option value="https://music.163.com/song/media/outer/url?id=26237341.mp3">🎵 备用 2：贝多芬《月光第一乐章》 (静谧月夜)</option>
+          <option value="https://music.163.com/song/media/outer/url?id=141976.mp3">🎵 备用 3：肖邦《夜曲》 (唯美温柔舒缓)</option>
+        </select>
       </div>
     </div>
     
@@ -522,6 +527,18 @@ const storedMusicUrl = localStorage.getItem('recitation_bg_music_url');
 if (storedMusicUrl) {
   bgMusic.src = storedMusicUrl;
   customUrlInput.value = storedMusicUrl;
+  
+  // 页面加载完成后追加自定义选项并选中它
+  window.addEventListener('DOMContentLoaded', () => {
+    const selectEl = document.getElementById('bgm-select');
+    if (selectEl) {
+      const opt = document.createElement('option');
+      opt.value = storedMusicUrl;
+      opt.innerText = "🎵 自定义专属伴奏";
+      selectEl.appendChild(opt);
+      selectEl.value = storedMusicUrl;
+    }
+  });
 }
 
 // 动态拼音解析渲染逻辑
@@ -626,16 +643,45 @@ function togglePlay() {
   }
 }
 
+// 切换预设伴奏
+function changeBGM(url) {
+  const btn = document.getElementById('play-btn');
+  bgMusic.src = url;
+  bgMusic.load();
+  if (btn.innerText === '⏸') {
+    bgMusic.play().catch(e => console.warn(e));
+  }
+}
+
 // 自定义伴奏 MP3 更改
 function changeMusicUrl(url) {
   if (url.trim()) {
     bgMusic.src = url.trim();
     localStorage.setItem('recitation_bg_music_url', url.trim());
     bgMusic.load();
-    if (!bgMusic.paused) {
-      bgMusic.play();
+    if (document.getElementById('play-btn').innerText === '⏸') {
+      bgMusic.play().catch(e => console.warn(e));
     }
-    document.getElementById('music-title').innerText = "🎵 伴奏：用户自定义伴奏";
+    
+    // 动态添加一个自定义项到下拉框中并选中
+    const selectEl = document.getElementById('bgm-select');
+    if (selectEl) {
+      let hasCustom = false;
+      for (let i = 0; i < selectEl.options.length; i++) {
+        if (selectEl.options[i].value === url.trim()) {
+          hasCustom = true;
+          selectEl.selectedIndex = i;
+          break;
+        }
+      }
+      if (!hasCustom) {
+        const opt = document.createElement('option');
+        opt.value = url.trim();
+        opt.innerText = "🎵 自定义专属伴奏";
+        selectEl.appendChild(opt);
+        selectEl.value = url.trim();
+      }
+    }
   }
 }
 
