@@ -151,7 +151,7 @@
   .recitation-card {
     background: var(--card-bg);
     border-radius: 24px;
-    padding: 35px 45px;
+    padding: 30px 45px;
     box-shadow: var(--shadow-soft);
     border: 1px solid var(--border-color);
     position: relative;
@@ -165,7 +165,7 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
   }
   .decor-img {
     width: 140px;
@@ -210,14 +210,14 @@
       var(--accent-purple) 100%
     );
     border-radius: 2px;
-    margin-bottom: 22px;
+    margin-bottom: 18px;
   }
   
   /* 朗诵展示区 */
   .speech-content {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 9px;
     align-items: center;
     width: 100%;
   }
@@ -395,7 +395,7 @@
       height: 2px !important;
     }
     .speech-content {
-      gap: 6px !important; /* 压缩行间距，寸土必争，杜绝跨页 */
+      gap: 4px !important; /* 压缩行间距，寸土必争，杜绝跨页 */
       justify-content: center !important;
     }
     .speech-line {
@@ -476,16 +476,22 @@
 <audio id="bgm-custom" loop preload="auto"></audio>
 
 <script>
-// 悦菡朗诵文本 (经过字词纠偏与完美句读排版)
+// 悦菡朗诵文本 (经过字词纠偏与完美诗歌体句读排版)
 const lines = [
-  "大家好。我是一年级九班的王悦菡。",
-  "我朗诵的作品是彩色的中国。",
-  "轻轻打开地图。我第一眼就看到了彩色的中国。",
-  "碧绿的是草原，金黄的是沙漠，蔚蓝的是大海，银白的是雪山。",
-  "今天我们是祖国的幼苗。",
-  "明天我们一定会长成参天大树，成为祖国的栋梁。",
-  "看祖国的版图上一片五颜六色，就像盛开的鲜艳花朵。",
-  "面对这美丽的图画，让我们放声歌唱。",
+  "大家好！我是一年级九班的王悦菡。",
+  "我朗诵的作品是——《彩色的中国》。",
+  "轻轻打开地图，",
+  "我第一眼就看到了彩色的中国：",
+  "碧绿的是草原，",
+  "金黄的是沙漠，",
+  "蔚蓝的是大海，",
+  "银白的是雪山。",
+  "今天我们是祖国的幼苗，",
+  "明天我们一定会长成参天大树，",
+  "成为祖国的栋梁。",
+  "看，祖国的版图上一片五颜六色，",
+  "就像盛开的鲜艳花朵。",
+  "面对这美丽的图画，让我们放声歌唱：",
   "我爱您，中国！"
 ];
 
