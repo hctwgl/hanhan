@@ -418,6 +418,13 @@
   
   <!-- 顶栏悬浮胶囊控制台 (非打印) -->
   <div class="control-bar no-print">
+    <!-- 返回语文乐园 -->
+    <div class="control-group">
+      <a href="index.html" class="btn-print" style="background: linear-gradient(135deg, #1e88e5, #1565c0); text-decoration: none; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(30, 136, 229, 0.15);" title="返回语文乐园主控台">
+        🏠 返回语文乐园
+      </a>
+    </div>
+
     <!-- 伴奏播放与轨道切换 -->
     <div class="control-group">
       <div class="music-widget">
@@ -537,6 +544,9 @@ window.onload = () => {
 
 // Web Speech API 标准慢速跟读示范
 function speakSentence(text) {
+  // 打通小学语文乐园成就墙进度
+  localStorage.setItem('yuwen_achievement_recitation', 'true');
+
   if ('speechSynthesis' in window) {
     window.speechSynthesis.cancel();
     
@@ -559,6 +569,9 @@ function togglePlay() {
   if (!activeAud) return;
   
   if (activeAud.paused) {
+    // 打通小学语文乐园成就墙进度
+    localStorage.setItem('yuwen_achievement_recitation', 'true');
+
     // 播放前，确保其他所有背景音乐全部暂停
     document.querySelectorAll('audio').forEach(aud => {
       if (aud.id !== currentBGMId) {

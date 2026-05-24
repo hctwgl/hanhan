@@ -898,6 +898,9 @@
   <!-- 控制面板 (非打印) -->
   <div class="control-panel no-print">
     <div class="control-group">
+      <a href="index.html" class="btn" style="background: linear-gradient(135deg, #2e7d32, #1b5e20); color: #ffffff; border: none; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 4px 10px rgba(46, 125, 50, 0.15);" title="返回语文乐园主控台">
+        🏠 返回语文乐园
+      </a>
       <div class="mode-switcher">
         <div class="mode-tab active" id="tab-student" onclick="setMode('student')">✏️ 学生练习模式</div>
         <div class="mode-tab" id="tab-teacher" onclick="setMode('teacher')">🔍 教师批改模式</div>
@@ -1458,6 +1461,9 @@ function filterUnit(val) {
 
 // 拼音发音 (Web Speech API - 优化 iOS 兼容版)
 function speakWord(char, pinyin, element) {
+  // 打通小学语文乐园成就墙进度
+  localStorage.setItem('yuwen_achievement_baici', 'true');
+  
   if ('speechSynthesis' in window) {
     element.classList.add('speaking');
     

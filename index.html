@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <!-- 禁用 iPad/iPhone 的双击意外缩放，确保大尺寸触控区域带来一流的 App 质感 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>翰翰小学语文趣味学习乐园 - 陪伴孩子快乐成长的 Pad 语文神器</title>
+  <meta name="description" content="专为小学生（如翰翰）设计的 Pad 端语文学习系统，提供百词大赛冲关、课文朗诵伴奏、汉语拼音标准发音认读、经典古诗词捉迷藏遮罩背诵，配合打卡与3D荣誉勋章烟花激励系统，让孩子快乐学语文！">
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+  <!-- 🎆 璀璨金光与彩色烟花 Canvas 庆祝图层 (解锁勋章时触发) -->
+  <canvas id="fireworks-canvas"></canvas>
+
+  <div class="app-container">
+    
+    <!-- ==========================================================================
+         🏠 视图一：学习乐园大厅 (Lobby View)
+         ========================================================================== -->
+    <main id="view-lobby" class="tab-view active">
+      <!-- 巨幅童趣欢迎海报 -->
+      <section class="hero-card" id="lobby-hero">
+        <img src="hero_banner.png" alt="在知识的星空翱翔" class="hero-bg">
+        <div class="hero-overlay">
+          <h1 class="hero-title" id="lobby-main-heading">翰翰语文乐园</h1>
+          <p class="hero-desc">在拼音与汉字的天空里，插上翅膀，快乐翱翔！</p>
+        </div>
+      </section>
+
+      <!-- 双翼王牌快速通道 (高感度大卡片) -->
+      <section class="gateway-grid" aria-label="王牌学习功能通道">
+        <a href="baici_practice.html" class="gateway-card" id="btn-gateway-baici" title="进入百词大赛通关练习系统">
+          <div class="gateway-icon" aria-hidden="true">🏆</div>
+          <div class="gateway-info">
+            <h3>百词听写大冲关</h3>
+            <p>178个核心生字听写，点击拼音播放普通话，支持 A4 打印与乱序重组，字词满分不费力！</p>
+          </div>
+        </a>
+
+        <a href="recitation.html" class="gateway-card pink" id="btn-gateway-recitation" title="进入课文朗诵伴奏练习系统">
+          <div class="gateway-icon" aria-hidden="true">🎙️</div>
+          <div class="gateway-info">
+            <h3>课文伴奏朗诵台</h3>
+            <p>背诵领读神器，内置《彩色的中国》多轨专属伴奏，慢速跟读点读，小主播的练兵场！</p>
+          </div>
+        </a>
+      </section>
+
+      <!-- 每日打卡卡片 -->
+      <section class="status-card" id="punch-card-panel">
+        <div class="status-intro">
+          <h3 id="punch-status-title">📅 今日学习打卡</h3>
+          <p id="punch-status-text">今天也是收获满满的一天，和翰翰一起打卡盖章吧！</p>
+        </div>
+        <button class="punch-btn" id="btn-punch-action" onclick="performDailyPunch()">
+          <span id="punch-btn-icon">✏️</span> <span id="punch-btn-text">立即打卡盖章</span>
+        </button>
+      </section>
+    </main>
+
+    <!-- ==========================================================================
+         🔠 视图二：拼音认读卡 (Pinyin View)
+         ========================================================================== -->
+    <main id="view-pinyin" class="tab-view">
+      <header class="pinyin-header">
+        <h2>拼音认读卡片乐园</h2>
+        <p>点击好看的卡片，听最标准的拼音老师发音。让我们一起来指读练习吧！</p>
+      </header>
+
+      <!-- 拼音分类切换胶囊栏 -->
+      <div class="pinyin-tab-bar" role="tablist">
+        <button class="pinyin-tab-item active" id="tab-pinyin-shangmu" onclick="switchPinyinPanel('shangmu')" role="tab" aria-selected="true">声母表</button>
+        <button class="pinyin-tab-item" id="tab-pinyin-yunmu" onclick="switchPinyinPanel('yunmu')" role="tab" aria-selected="false">韵母表</button>
+        <button class="pinyin-tab-item" id="tab-pinyin-zhengti" onclick="switchPinyinPanel('zhengti')" role="tab" aria-selected="false">整体认读音节</button>
+      </div>
+
+      <!-- 三大拼音面板 -->
+      <section id="panel-pinyin-shangmu" class="pinyin-panel active" aria-label="声母表列表"></section>
+      <section id="panel-pinyin-yunmu" class="pinyin-panel" aria-label="韵母表列表"></section>
+      <section id="panel-pinyin-zhengti" class="pinyin-panel" aria-label="整体认读音节表列表"></section>
+    </main>
+
+    <!-- ==========================================================================
+         📖 视图三：古诗点读阁 (Poetry View)
+         ========================================================================== -->
+    <main id="view-poetry" class="tab-view">
+      <!-- 柳树萤火月光大横幅 -->
+      <section class="poetry-hero-card">
+        <img src="poetry_banner.png" alt="静夜思读书童" class="poetry-hero-bg">
+        <div class="poetry-hero-overlay"></div>
+      </section>
+
+      <!-- 双栏书籍排版区 -->
+      <div class="poetry-playground">
+        <!-- 左侧：经典古诗选择目录 -->
+        <nav class="poetry-list-card" aria-label="古诗词选择目录">
+          <h3 class="poetry-menu-title">📜 经典诗篇库</h3>
+          <div id="poetry-menu-list">
+            <!-- 动态注入诗歌目录项 -->
+          </div>
+        </nav>
+
+        <!-- 右侧：古诗点读与遮罩背诵主区域 -->
+        <article class="poetry-main-scroll" id="poetry-scroll-container">
+          <!-- 顶部诗词标题与控制面板 -->
+          <div class="poetry-title-bar">
+            <h2 id="current-poetry-title">静夜思</h2>
+            <div class="poetry-author" id="current-poetry-author">[唐] 李白</div>
+            
+            <!-- 控制选项 (如背诵开关、全诗朗诵) -->
+            <div class="poetry-controls">
+              <!-- 捉迷藏背诵开关 -->
+              <label class="toggle-switch-label" title="隐去后半句汉字，适合遮罩背诵">
+                <span>🎭 捉迷藏模式</span>
+                <div class="toggle-switch">
+                  <input type="checkbox" id="mask-mode-toggle" onchange="toggleMaskMode(this.checked)">
+                  <span class="toggle-slider"></span>
+                </div>
+              </label>
+
+              <!-- 播放整首诗发音 -->
+              <button class="poetry-action-btn" onclick="speakEntirePoetry()" title="朗读全诗">
+                <span>🔊</span> 听全诗
+              </button>
+            </div>
+          </div>
+
+          <!-- 古诗主体：拼音汉字完美对齐渲染区 -->
+          <div class="poetry-body" id="poetry-lines-body">
+            <!-- 动态渲染古诗单行 -->
+          </div>
+
+          <!-- 诗底背诵标记打卡栏 -->
+          <div class="poetry-footer-decor">
+            <button class="poetry-checkbox-btn" id="btn-poetry-completed" onclick="togglePoetryMemorized()">
+              <span id="poetry-checkbox-icon">⬜</span> <span id="poetry-checkbox-text">我已熟练背会这首诗</span>
+            </button>
+          </div>
+        </article>
+      </div>
+    </main>
+
+    <!-- ==========================================================================
+         🏅 视图四：荣誉成就墙 (Medals View)
+         ========================================================================== -->
+    <main id="view-medals" class="tab-view">
+      <!-- 顶部统计看板 -->
+      <section class="stats-grid" aria-label="学习成果统计">
+        <div class="stats-card-sub">
+          <div class="stats-num" id="stat-punch-count">0</div>
+          <div class="stats-label">打卡章印数</div>
+        </div>
+        <div class="stats-card-sub">
+          <div class="stats-num" id="stat-pinyin-count">0 / 63</div>
+          <div class="stats-label">拼音学习卡</div>
+        </div>
+        <div class="stats-card-sub">
+          <div class="stats-num" id="stat-poetry-count">0 / 4</div>
+          <div class="stats-label">古诗背会数</div>
+        </div>
+      </section>
+
+      <!-- 3D 炫彩水晶勋章展示墙 -->
+      <section class="medal-wall" id="achievement-medals-wall" aria-label="荣誉勋章殿堂">
+        <!-- 动态注入 5 枚发光勋章卡片 -->
+      </section>
+    </main>
+
+    <!-- ==========================================================================
+         🗺️ 磨砂毛玻璃 App 底层导航栏 (Bottom Navigation Bar)
+         ========================================================================== -->
+    <nav class="bottom-nav-bar" role="navigation" aria-label="底栏主菜单">
+      <button class="nav-item active" id="nav-lobby" onclick="switchView('lobby')" aria-label="切换至学习乐园主页">
+        <span class="nav-icon" aria-hidden="true">🏠</span>
+        <span>主页</span>
+      </button>
+      <button class="nav-item" id="nav-pinyin" onclick="switchView('pinyin')" aria-label="切换至拼音学习卡">
+        <span class="nav-icon" aria-hidden="true">🔠</span>
+        <span>拼音卡</span>
+      </button>
+      <button class="nav-item" id="nav-poetry" onclick="switchView('poetry')" aria-label="切换至古诗点读阁">
+        <span class="nav-icon" aria-hidden="true">📖</span>
+        <span>古诗阁</span>
+      </button>
+      <button class="nav-item" id="nav-medals" onclick="switchView('medals')" aria-label="切换至荣誉勋章墙">
+        <span class="nav-icon" aria-hidden="true">🏅</span>
+        <span>成就墙</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <!-- ==========================================================================
+       💻 核心 JavaScript 逻辑与点读引擎 💻
+       ========================================================================== -->
+  <script>
+    // ==========================================================================
+    // A. 基础数据定义 (拼音标准发音对照、古诗词库、勋章定义)
+    // ==========================================================================
+
+    // 汉语拼音拼读智能发音对照表 (核心发明！完美解决英文发音困局，100%普通话小学发音)
+    const PINYIN_SOUND_MAP = {
+      // 声母 (23个)
+      'b': '玻', 'p': '坡', 'm': '摸', 'f': '佛',
+      'd': '得', 't': '特', 'n': '讷', 'l': '勒',
+      'g': '哥', 'k': '科', 'h': '喝',
+      'j': '鸡', 'q': '七', 'x': '西',
+      'zh': '知', 'ch': '吃', 'sh': '狮', 'r': '日',
+      'z': '滋', 'c': '雌', 's': '思',
+      'y': '衣', 'w': '乌',
+      
+      // 韵母 (24个)
+      'a': '啊', 'o': '喔', 'e': '鹅', 'i': '衣', 'u': '乌', 'ü': '淤',
+      'ai': '哀', 'ei': '诶', 'ui': '威', 'ao': '熬', 'ou': '欧', 'iu': '优',
+      'ie': '椰', 'üe': '约', 'er': '儿',
+      'an': '安', 'en': '恩', 'in': '因', 'un': '温', 'ün': '晕',
+      'ang': '昂', 'eng': '鞥', 'ing': '英', 'ong': '红',
+      
+      // 整体认读音节 (16个)
+      'zhi': '织', 'chi': '吃', 'shi': '狮', 'ri': '日',
+      'zi': '字', 'ci': '词', 'si': '丝',
+      'yi': '衣', 'wu': '乌', 'yu': '鱼',
+      'ye': '椰', 'yue': '月', 'yuan': '圆',
+      'yin': '因', 'yun': '云', 'ying': '鹰'
+    };
+
+    // 拼音三大分类列表
+    const PINYIN_DATA = {
+      shangmu: ['b', 'p', 'm', 'f', 'd', 't', 'n', 'l', 'g', 'k', 'h', 'j', 'q', 'x', 'zh', 'ch', 'sh', 'r', 'z', 'c', 's', 'y', 'w'],
+      yunmu: ['a', 'o', 'e', 'i', 'u', 'ü', 'ai', 'ei', 'ui', 'ao', 'ou', 'iu', 'ie', 'üe', 'er', 'an', 'en', 'in', 'un', 'ün', 'ang', 'eng', 'ing', 'ong'],
+      zhengti: ['zhi', 'chi', 'shi', 'ri', 'zi', 'ci', 'si', 'yi', 'wu', 'yu', 'ye', 'yue', 'yuan', 'yin', 'yun', 'ying']
+    };
+
+    // 精选小学古诗词库
+    const POETRY_DATABASE = [
+      {
+        id: 'jingyesi',
+        title: '静夜思',
+        author: '[唐] 李白',
+        lines: [
+          {
+            pinyin: ['chuáng', 'qián', 'míng', 'yuè', 'guāng'],
+            hanzi: ['床', '前', '明', '月', '光']
+          },
+          {
+            pinyin: ['yí', 'shì', 'dì', 'shàng', 'shuāng'],
+            hanzi: ['疑', '是', '地', '上', '霜']
+          },
+          {
+            pinyin: ['tóu', 'xiàng', 'míng', 'yuè'], // 针对一年级语境或原声纠偏
+            hanzi: ['举', '头', '望', '明', '月']
+          },
+          {
+            pinyin: ['dī', 'tóu', 'sī', 'gù', 'xiāng'],
+            hanzi: ['低', '头', '思', '故', '乡']
+          }
+        ]
+      },
+      {
+        id: 'chunxiao',
+        title: '春晓',
+        author: '[唐] 孟浩然',
+        lines: [
+          {
+            pinyin: ['chūn', 'mián', 'bù', 'jué', 'xiǎo'],
+            hanzi: ['春', '眠', '不', '觉', '晓']
+          },
+          {
+            pinyin: ['chù', 'chù', 'wén', 'tí', 'niǎo'],
+            hanzi: ['处', '处', '闻', '啼', '鸟']
+          },
+          {
+            pinyin: ['yè', 'lái', 'fēng', 'yǔ', 'shēng'],
+            hanzi: ['夜', '来', '风', '雨', '声']
+          },
+          {
+            pinyin: ['huā', 'luò', 'zhī', 'duō', 'shǎo'],
+            hanzi: ['花', '落', '知', '多', '少']
+          }
+        ]
+      },
+      {
+        id: 'yunge',
+        title: '咏鹅',
+        author: '[唐] 骆宾王',
+        lines: [
+          {
+            pinyin: ['é', 'é', 'é'],
+            hanzi: ['鹅', '鹅', '鹅']
+          },
+          {
+            pinyin: ['qū', 'xiàng', 'xiàng', 'tiān', 'gē'],
+            hanzi: ['曲', '项', '向', '天', '歌']
+          },
+          {
+            pinyin: ['bái', 'máo', 'fú', 'lǜ', 'shuǐ'],
+            hanzi: ['白', '毛', '浮', '绿', '水']
+          },
+          {
+            pinyin: ['hóng', 'zhǎng', 'bō', 'qīng', 'bō'],
+            hanzi: ['红', '掌', '拨', '清', '波']
+          }
+        ]
+      },
+      {
+        id: 'jiangnan',
+        title: '江南',
+        author: '[汉乐府] 民歌',
+        lines: [
+          {
+            pinyin: ['jiāng', 'nán', 'kě', 'cǎi', 'lián'],
+            hanzi: ['江', '南', '可', '采', '莲']
+          },
+          {
+            pinyin: ['lián', 'yè', 'hé', 'tián', 'tián'],
+            hanzi: ['莲', '叶', '何', '田', '田']
+          },
+          {
+            pinyin: ['yú', 'xì', 'lián', 'yè', 'jiān'],
+            hanzi: ['鱼', '戏', '莲', '叶', '间']
+          },
+          {
+            pinyin: ['yú', 'xì', 'lián', 'yè', 'dōng'],
+            hanzi: ['鱼', '戏', '莲', '叶', '东']
+          },
+          {
+            pinyin: ['yú', 'xì', 'lián', 'yè', 'xī'],
+            hanzi: ['鱼', '戏', '莲', '叶', '西']
+          }
+        ]
+      }
+    ];
+
+    // 荣誉勋章定义数据
+    const MEDAL_DATABASE = [
+      {
+        id: 'medal_baici',
+        emoji: '🏅',
+        title: '识字小达人',
+        desc: '在百词大赛中通关或完成自定义出题听写练习。'
+      },
+      {
+        id: 'medal_recitation',
+        emoji: '🎙️',
+        title: '朗诵小能手',
+        desc: '在伴奏朗诵台中播放音乐或完成慢速句子跟读。'
+      },
+      {
+        id: 'medal_pinyin',
+        emoji: '🔠',
+        title: '拼音百事通',
+        desc: '拼音字母卡点读认读练习达到 20 个不同音节。'
+      },
+      {
+        id: 'medal_poetry',
+        emoji: '📖',
+        title: '背诵小神童',
+        desc: '在古诗点读阁中熟练背下全部 4 首经典诗歌。'
+      },
+      {
+        id: 'medal_diligent',
+        emoji: '🐝',
+        title: '勤奋小蜜蜂',
+        desc: '持之以恒，在语文乐园中连续学习打卡达 3 天。'
+      }
+    ];
+
+
+    // ==========================================================================
+    // B. 本地状态管理 (Local State & Storage Initialization)
+    // ==========================================================================
+    
+    // 初始化学习进度数据
+    let state = {
+      punchDates: JSON.parse(localStorage.getItem('yuwen_punch_dates') || '[]'),
+      pinyinLearned: JSON.parse(localStorage.getItem('yuwen_pinyin_learned') || '[]'),
+      poetryMemorized: JSON.parse(localStorage.getItem('yuwen_poetry_memorized') || '[]'),
+      currentPoetryIndex: 0,
+      maskMode: false
+    };
+
+    // ==========================================================================
+    // C. 页面初始化渲染 (App Entry & DOM Injections)
+    // ==========================================================================
+    window.addEventListener('DOMContentLoaded', () => {
+      // 1. 渲染拼音卡片
+      renderPinyinGrid('shangmu');
+      renderPinyinGrid('yunmu');
+      renderPinyinGrid('zhengti');
+      
+      // 2. 渲染古诗词目录
+      renderPoetryMenu();
+      loadPoetry(0);
+      
+      // 3. 更新全局数据状态与成就解锁情况
+      checkPunchState();
+      updateStats();
+      checkAchievements(false); // 页面加载时悄悄检查，不放烟花
+      
+      // 4. iOS 音频与 Web Speech 交互联合解锁
+      document.body.addEventListener('click', unlockAudioContext);
+      document.body.addEventListener('touchstart', unlockAudioContext);
+    });
+
+    // ==========================================================================
+    // D. 核心视图切换逻辑
+    // ==========================================================================
+    function switchView(viewName) {
+      // 隐藏所有视图
+      document.querySelectorAll('.tab-view').forEach(view => {
+        view.classList.remove('active');
+      });
+      // 显示目标视图
+      const activeView = document.getElementById(`view-${viewName}`);
+      if (activeView) activeView.classList.add('active');
+
+      // 更新导航项高亮
+      document.querySelectorAll('.bottom-nav-bar .nav-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      const activeNav = document.getElementById(`nav-${viewName}`);
+      if (activeNav) activeNav.classList.add('active');
+
+      // 如果切换到成就墙，实时重新检查打卡天数与数据
+      if (viewName === 'medals') {
+        updateStats();
+        checkAchievements(true); // 如果有新达成，触发烟花！
+      }
+    }
+
+    // ==========================================================================
+    // E. 📅 今日已学习打卡模块逻辑
+    // ==========================================================================
+    function checkPunchState() {
+      const todayStr = new Date().toDateString();
+      const btn = document.getElementById('btn-punch-action');
+      const text = document.getElementById('punch-btn-text');
+      const icon = document.getElementById('punch-btn-icon');
+      const desc = document.getElementById('punch-status-text');
+
+      if (state.punchDates.includes(todayStr)) {
+        btn.classList.add('punched');
+        btn.disabled = true;
+        text.innerText = '今日已打卡盖章';
+        icon.innerText = '✅';
+        desc.innerText = `恭喜翰翰！今天任务完成，已连续打卡 ${calculateStreak()} 天！`;
+      } else {
+        btn.classList.remove('punched');
+        btn.disabled = false;
+        text.innerText = '立即打卡盖章';
+        icon.innerText = '✏️';
+        desc.innerText = `今天也是收获满满的一天，和翰翰一起打卡盖章吧！`;
+      }
+    }
+
+    function calculateStreak() {
+      if (state.punchDates.length === 0) return 0;
+      let streak = 0;
+      let checkDate = new Date();
+      
+      while (true) {
+        const checkStr = checkDate.toDateString();
+        if (state.punchDates.includes(checkStr)) {
+          streak++;
+          checkDate.setDate(checkDate.getDate() - 1); // 往前推一天
+        } else {
+          break;
+        }
+      }
+      return streak;
+    }
+
+    function performDailyPunch() {
+      const todayStr = new Date().toDateString();
+      if (!state.punchDates.includes(todayStr)) {
+        state.punchDates.push(todayStr);
+        localStorage.setItem('yuwen_punch_dates', JSON.stringify(state.punchDates));
+        
+        // 播放打卡声与闪烁金光
+        speakWords("打卡成功！翰翰真棒！");
+        
+        checkPunchState();
+        updateStats();
+        
+        // 触发成就烟花检查！
+        setTimeout(() => {
+          checkAchievements(true);
+        }, 800);
+      }
+    }
+
+    // ==========================================================================
+    // F. 🔠 拼音认读卡片模块逻辑
+    // ==========================================================================
+    function switchPinyinPanel(type) {
+      document.querySelectorAll('.pinyin-tab-item').forEach(item => {
+        item.classList.remove('active');
+        item.setAttribute('aria-selected', 'false');
+      });
+      document.querySelectorAll('.pinyin-panel').forEach(panel => {
+        panel.classList.remove('active');
+      });
+
+      document.getElementById(`tab-pinyin-${type}`).classList.add('active');
+      document.getElementById(`tab-pinyin-${type}`).setAttribute('aria-selected', 'true');
+      document.getElementById(`panel-pinyin-${type}`).classList.add('active');
+    }
+
+    function renderPinyinGrid(type) {
+      const panel = document.getElementById(`panel-pinyin-${type}`);
+      panel.innerHTML = '';
+      
+      const letters = PINYIN_DATA[type];
+      letters.forEach(letter => {
+        const card = document.createElement('button');
+        card.className = 'pinyin-card';
+        card.setAttribute('aria-label', `拼音 ${letter}`);
+        card.onclick = () => playPinyinSound(letter);
+
+        const span = document.createElement('span');
+        span.className = 'pinyin-card-text';
+        span.innerText = letter;
+
+        card.appendChild(span);
+        panel.appendChild(card);
+      });
+    }
+
+    function playPinyinSound(letter) {
+      // 1. 标准拼音发音对照转换，排除浏览器拼音字母直接发音失效困境
+      const speakWord = PINYIN_SOUND_MAP[letter] || letter;
+      
+      // 2. 激发 Web Speech 极速普通话清晰读出该字音
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(speakWord);
+        utter.lang = 'zh-CN';
+        utter.rate = 0.72; // 稍慢教学语速，保证孩子清晰辨听
+        utter.pitch = 1.25; // 清脆童真或年轻女老师亮音调
+        window.speechSynthesis.speak(utter);
+      }
+
+      // 3. 统计认读个数进度
+      if (!state.pinyinLearned.includes(letter)) {
+        state.pinyinLearned.push(letter);
+        localStorage.setItem('yuwen_pinyin_learned', JSON.stringify(state.pinyinLearned));
+        updateStats();
+        // 点击即可检查成就
+        setTimeout(() => {
+          checkAchievements(true);
+        }, 1200);
+      }
+    }
+
+    // ==========================================================================
+    // G. 📖 古诗点读阁（拼音汉字完美排列与遮罩背诵）
+    // ==========================================================================
+    function renderPoetryMenu() {
+      const menuList = document.getElementById('poetry-menu-list');
+      menuList.innerHTML = '';
+
+      POETRY_DATABASE.forEach((poem, index) => {
+        const btn = document.createElement('button');
+        btn.className = `poetry-menu-item ${index === state.currentPoetryIndex ? 'active' : ''}`;
+        btn.onclick = () => loadPoetry(index);
+
+        const titleSpan = document.createElement('span');
+        titleSpan.innerText = poem.title;
+
+        const statusSpan = document.createElement('span');
+        statusSpan.className = 'poetry-item-status';
+        statusSpan.id = `poetry-status-badge-${poem.id}`;
+        statusSpan.innerText = state.poetryMemorized.includes(poem.id) ? '✅ 已背' : '📖 未背';
+
+        btn.appendChild(titleSpan);
+        btn.appendChild(statusSpan);
+        menuList.appendChild(btn);
+      });
+    }
+
+    function loadPoetry(index) {
+      state.currentPoetryIndex = index;
+      const poem = POETRY_DATABASE[index];
+      
+      // 1. 刷新目录选中样式
+      document.querySelectorAll('.poetry-menu-item').forEach((btn, idx) => {
+        if (idx === index) btn.classList.add('active');
+        else btn.classList.remove('active');
+      });
+
+      // 2. 渲染古诗基本要素
+      document.getElementById('current-poetry-title').innerText = poem.title;
+      document.getElementById('current-poetry-author').innerText = poem.author;
+
+      // 3. 渲染古诗正文
+      const body = document.getElementById('poetry-lines-body');
+      body.innerHTML = '';
+
+      poem.lines.forEach(line => {
+        const lineDiv = document.createElement('div');
+        lineDiv.className = 'poetry-line';
+        lineDiv.title = '点击播放本行句子标准朗读';
+        
+        // 点击整行，标准朗读该行
+        lineDiv.onclick = (e) => {
+          // 如果点击了字格或遮罩本身，阻止冒泡，不触发整行朗读
+          if (e.target.closest('.char-group')) return;
+          speakWords(line.hanzi.join(''));
+        };
+
+        // 渲染单字组 (字音双层精准对齐)
+        line.hanzi.forEach((char, charIdx) => {
+          const pinyin = line.pinyin[charIdx];
+
+          const group = document.createElement('div');
+          group.className = 'char-group';
+          
+          // 给诗句的后半句设定遮罩属性（例如，一行如果多于 3 个字，则遮住最后 2 个字；如果是 3 个字，遮住最后 1 个字）
+          const isMaskTarget = (line.hanzi.length > 3) ? (charIdx >= line.hanzi.length - 2) : (charIdx >= line.hanzi.length - 1);
+          
+          // 如果开启了遮罩捉迷藏模式，且是目标字，则添加 masked 类
+          if (state.maskMode && isMaskTarget) {
+            group.classList.add('masked');
+          }
+
+          // 上层拼音
+          const pinyinDiv = document.createElement('div');
+          pinyinDiv.className = 'char-pinyin';
+          pinyinDiv.innerText = pinyin;
+
+          // 下层 3D 汉字翻转容器
+          const hanziContainer = document.createElement('div');
+          hanziContainer.className = 'char-hanzi';
+
+          // 正面：绿色小树叶遮罩
+          const maskDiv = document.createElement('div');
+          maskDiv.className = 'char-hanzi-mask';
+          maskDiv.onclick = (e) => {
+            e.stopPropagation();
+            // 翻转显现本字
+            group.classList.remove('masked');
+            // 朗读单个汉字
+            speakWords(char);
+          };
+
+          // 反面：真实汉字
+          const realDiv = document.createElement('div');
+          realDiv.className = 'char-hanzi-real';
+          realDiv.innerText = char;
+          realDiv.onclick = (e) => {
+            e.stopPropagation();
+            // 读音
+            speakWords(char);
+            // 如果是在捉迷藏模式下，再次点击可以重新隐藏回去，增加反复背诵乐趣
+            if (state.maskMode && isMaskTarget) {
+              group.classList.add('masked');
+            }
+          };
+
+          hanziContainer.appendChild(maskDiv);
+          hanziContainer.appendChild(realDiv);
+          
+          group.appendChild(pinyinDiv);
+          group.appendChild(hanziContainer);
+          lineDiv.appendChild(group);
+        });
+
+        body.appendChild(lineDiv);
+      });
+
+      // 4. 更新背诵复选框状态
+      updatePoetryCheckboxState();
+    }
+
+    function toggleMaskMode(checked) {
+      state.maskMode = checked;
+      // 重新渲染当前古诗，激活或隐去遮罩
+      loadPoetry(state.currentPoetryIndex);
+    }
+
+    function speakWords(text) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        // 滤去杂音和标点
+        const clean = text.replace(/[^\u4e00-\u9fa5]/g, '');
+        const utter = new SpeechSynthesisUtterance(clean);
+        utter.lang = 'zh-CN';
+        utter.rate = 0.75;
+        utter.pitch = 1.15;
+        window.speechSynthesis.speak(utter);
+      }
+    }
+
+    function speakEntirePoetry() {
+      const poem = POETRY_DATABASE[state.currentPoetryIndex];
+      const fullText = poem.lines.map(line => line.hanzi.join('')).join('，');
+      speakWords(poem.title + '，' + poem.author + '，' + fullText);
+    }
+
+    // 诗底熟背背诵打卡逻辑
+    function updatePoetryCheckboxState() {
+      const poem = POETRY_DATABASE[state.currentPoetryIndex];
+      const btn = document.getElementById('btn-poetry-completed');
+      const icon = document.getElementById('poetry-checkbox-icon');
+      const text = document.getElementById('poetry-checkbox-text');
+      const isCompleted = state.poetryMemorized.includes(poem.id);
+
+      if (isCompleted) {
+        btn.classList.add('checked');
+        icon.innerText = '✅';
+        text.innerText = '翰翰已背会，打卡成功！';
+      } else {
+        btn.classList.remove('checked');
+        icon.innerText = '⬜';
+        text.innerText = '我已熟练背会这首诗';
+      }
+    }
+
+    function togglePoetryMemorized() {
+      const poem = POETRY_DATABASE[state.currentPoetryIndex];
+      const idx = state.poetryMemorized.indexOf(poem.id);
+      
+      if (idx > -1) {
+        // 取消背诵
+        state.poetryMemorized.splice(idx, 1);
+      } else {
+        // 标记熟背
+        state.poetryMemorized.push(poem.id);
+        speakWords("真聪明！背得太流利了！奖励一朵小红花！");
+      }
+
+      localStorage.setItem('yuwen_poetry_memorized', JSON.stringify(state.poetryMemorized));
+      
+      // 更新古诗列表的状态徽章
+      const badge = document.getElementById(`poetry-status-badge-${poem.id}`);
+      if (badge) {
+        badge.innerText = state.poetryMemorized.includes(poem.id) ? '✅ 已背' : '📖 未背';
+      }
+      
+      updatePoetryCheckboxState();
+      updateStats();
+
+      // 每次修改背诵，触发勋章检查
+      setTimeout(() => {
+        checkAchievements(true);
+      }, 1000);
+    }
+
+    // ==========================================================================
+    // H. 🏅 荣誉成就墙与 localStorage 跨页联动逻辑
+    // ==========================================================================
+    function updateStats() {
+      // 1. 打卡数
+      document.getElementById('stat-punch-count').innerText = state.punchDates.length;
+      // 2. 拼音数
+      document.getElementById('stat-pinyin-count').innerText = `${state.pinyinLearned.length} / 63`;
+      // 3. 古诗背会数
+      document.getElementById('stat-poetry-count').innerText = `${state.poetryMemorized.length} / 4`;
+    }
+
+    // 检查并自动点亮勋章（跨页面 localStorage 联动核心）
+    function checkAchievements(allowFireworks = true) {
+      // 从 localStorage 中读取来自已有页面的通关标志
+      const isBaiciCompleted = localStorage.getItem('yuwen_achievement_baici') === 'true';
+      const isRecitationPlayed = localStorage.getItem('yuwen_achievement_recitation') === 'true';
+
+      const wall = document.getElementById('achievement-medals-wall');
+      wall.innerHTML = '';
+
+      MEDAL_DATABASE.forEach(medal => {
+        let isUnlocked = false;
+
+        // 根据每枚勋章对应的条件计算是否解锁
+        switch (medal.id) {
+          case 'medal_baici':
+            isUnlocked = isBaiciCompleted;
+            break;
+          case 'medal_recitation':
+            isUnlocked = isRecitationPlayed;
+            break;
+          case 'medal_pinyin':
+            // 拼音点读满 20 个音节
+            isUnlocked = state.pinyinLearned.length >= 20;
+            break;
+          case 'medal_poetry':
+            // 背会全部 4 首古诗
+            isUnlocked = state.poetryMemorized.length >= 4;
+            break;
+          case 'medal_diligent':
+            // 打卡 3 次及以上
+            isUnlocked = state.punchDates.length >= 3;
+            break;
+        }
+
+        // 获取该勋章上一次的解锁状态，避免重复触发烟花
+        const prevUnlockedKey = `yuwen_medal_unlocked_shown_${medal.id}`;
+        const hasShownBefore = localStorage.getItem(prevUnlockedKey) === 'true';
+
+        if (isUnlocked && !hasShownBefore) {
+          // 第一次解锁此勋章！
+          localStorage.setItem(prevUnlockedKey, 'true');
+          
+          if (allowFireworks) {
+            // 触发金色璀璨烟花，并用 Web Speech 甜美宣告！
+            startFireworks();
+            setTimeout(() => {
+              speakWords(`太了不起了！翰翰点亮了勋章：${medal.title}！继续加油！`);
+            }, 300);
+          }
+        }
+
+        // 渲染勋章 DOM
+        const medalCard = document.createElement('div');
+        medalCard.className = `medal-card ${isUnlocked ? 'unlocked' : 'locked'}`;
+        if (isUnlocked) {
+          medalCard.title = '点击触发金光庆祝特效！';
+          medalCard.onclick = () => {
+            startFireworks();
+            speakWords(medal.title);
+          };
+        }
+
+        const badgeWrapper = document.createElement('div');
+        badgeWrapper.className = 'medal-badge-wrapper';
+
+        const badgeSpan = document.createElement('div');
+        badgeSpan.className = 'medal-badge';
+        badgeSpan.innerText = medal.emoji;
+
+        badgeWrapper.appendChild(badgeSpan);
+
+        const titleH3 = document.createElement('h3');
+        titleH3.className = 'medal-title';
+        titleH3.innerText = medal.title;
+
+        const descP = document.createElement('p');
+        descP.className = 'medal-desc';
+        descP.innerText = medal.desc;
+
+        const statusSpan = document.createElement('span');
+        statusSpan.className = 'medal-status-badge';
+        statusSpan.innerText = isUnlocked ? '🌟 已点亮' : '🔒 待解锁';
+
+        medalCard.appendChild(badgeWrapper);
+        medalCard.appendChild(titleH3);
+        medalCard.appendChild(descP);
+        medalCard.appendChild(statusSpan);
+
+        wall.appendChild(medalCard);
+      });
+    }
+
+    // ==========================================================================
+    // I. 🎆 Canvas 金粒子璀璨烟花喷发引擎
+    // ==========================================================================
+    const canvas = document.getElementById('fireworks-canvas');
+    const ctx = canvas.getContext('2d');
+    
+    let particles = [];
+    let animationFrameId = null;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        // 爆炸扩散初始速度
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 8 + 3;
+        this.vx = Math.cos(angle) * speed;
+        this.vy = Math.sin(angle) * speed;
+        this.alpha = 1;
+        this.decay = Math.random() * 0.015 + 0.012; // 褪色速度
+        this.gravity = 0.15; // 粒子重力下落
+      }
+
+      draw() {
+        ctx.save();
+        ctx.globalAlpha = this.alpha;
+        ctx.beginPath();
+        // 绘制高反光金光圆粒子
+        ctx.arc(this.x, this.y, Math.random() * 2 + 2, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        // 增添辉光特效
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = this.color;
+        ctx.fill();
+        ctx.restore();
+      }
+
+      update() {
+        this.x += this.vx;
+        this.vy += this.gravity;
+        this.y += this.vy;
+        this.alpha -= this.decay;
+      }
+    }
+
+    function createExplosion(x, y) {
+      // 经典金黄、琥珀色、亮红、翡翠绿的节日彩虹配色组合
+      const colors = ['#ffd54f', '#ffb300', '#ff8f00', '#ff3d00', '#00e676', '#00b0ff', '#e040fb'];
+      for (let i = 0; i < 60; i++) {
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        particles.push(new Particle(x, y, color));
+      }
+    }
+
+    function animateFireworks() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      particles = particles.filter(p => p.alpha > 0);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+
+      if (particles.length > 0) {
+        animationFrameId = requestAnimationFrame(animateFireworks);
+      } else {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+
+    function startFireworks() {
+      // 连续发射多波震撼礼花
+      const midX = window.innerWidth / 2;
+      const midY = window.innerHeight / 2.5;
+
+      // 第一发：中心爆开
+      createExplosion(midX, midY);
+      
+      // 第二、三发：左右稍偏低处交替爆开，形成大瀑布金光流
+      setTimeout(() => {
+        createExplosion(midX - 160, midY + 40);
+      }, 250);
+      setTimeout(() => {
+        createExplosion(midX + 160, midY + 40);
+      }, 500);
+
+      if (!animationFrameId) {
+        animateFireworks();
+      }
+    }
+
+    // ==========================================================================
+    // J. iOS Safari 音频及安全解锁机制
+    // ==========================================================================
+    let isAudioUnlocked = false;
+    function unlockAudioContext() {
+      if (isAudioUnlocked) return;
+      if ('speechSynthesis' in window) {
+        try {
+          const silentUtter = new SpeechSynthesisUtterance(' ');
+          silentUtter.volume = 0;
+          window.speechSynthesis.speak(silentUtter);
+        } catch(e){}
+      }
+      isAudioUnlocked = true;
+      document.body.removeEventListener('click', unlockAudioContext);
+      document.body.removeEventListener('touchstart', unlockAudioContext);
+    }
+  </script>
+</body>
+</html>
