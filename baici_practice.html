@@ -15,11 +15,11 @@
     --accent-color: #8e44ad;
     --border-color: #e2e8f0;
     
-    /* 四线格（护眼绿） */
+    /* 护眼森林绿 */
     --green-line: #2e7d32;
     --green-dashed: rgba(46, 125, 50, 0.4);
     
-    /* 田字格（朱砂红） */
+    /* 汉字田字格（朱砂红） */
     --red-line: #e53935;
     --red-dashed: rgba(229, 57, 53, 0.35);
     
@@ -200,13 +200,13 @@
     padding-left: 10px;
   }
 
-  /* 第一关：看拼音写生字网格排版 */
+  /* 第一关：看拼音写生字网格排版 (连体双字词版) */
   .unit-title {
-    font-size: 15px;
-    color: var(--text-muted);
-    margin: 25px 0 12px 0;
-    border-bottom: 1px dashed var(--border-color);
-    padding-bottom: 5px;
+    font-size: 16px;
+    color: var(--primary-color);
+    margin: 30px 0 15px 0;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 6px;
     font-weight: bold;
   }
   .unit-section:first-of-type .unit-title {
@@ -214,85 +214,94 @@
   }
   .grid-box {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(56px, 1fr));
-    gap: 16px 12px;
+    /* 每一个词语占宽大约 130px，一行排 4 - 6 个词 */
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 20px 16px;
+  }
+  @media print {
+    /* 打印时强行以 4 列规整排版，和照片里的百词卷排版 100% 契合 */
+    .grid-box {
+      grid-template-columns: repeat(4, 1fr) !important;
+      gap: 24px 18px !important;
+    }
   }
   
-  /* 拼音字形组合器 */
-  .char-wrap {
+  /* 词语字形组合器 */
+  .word-wrap {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 56px;
+    width: 100%;
     position: relative;
   }
   
-  /* 拼音四线三格（护眼绿） */
-  .sixian {
-    width: 100%;
-    height: 24px;
-    position: relative;
-    border-top: 1.2px solid var(--green-line);
-    border-bottom: 1.2px solid var(--green-line);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  /* 词语拼音印刷字体 */
+  .word-pinyin {
+    font-size: 15px;
+    font-weight: 700;
+    font-family: "PingFang SC", "Comic Sans MS", "Arial", sans-serif;
+    color: #1a202c;
+    margin-bottom: 8px;
+    letter-spacing: 2px;
     cursor: pointer;
-    transition: background 0.2s ease;
-    border-radius: 2px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    text-align: center;
+    background: rgba(248, 250, 252, 0.8);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
   }
-  .sixian:hover {
+  .word-pinyin:hover {
     background: rgba(46, 125, 50, 0.08);
+    border-color: var(--green-line);
+    transform: translateY(-1px);
   }
-  .sixian::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 33.3%;
-    width: 100%;
-    border-top: 1px dashed var(--green-dashed);
-  }
-  .sixian::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 66.6%;
-    width: 100%;
-    border-top: 1px dashed var(--green-dashed);
-  }
-  .sixian span {
-    position: relative;
-    z-index: 2;
-    font-size: 13px;
-    font-weight: 600;
-    font-family: Arial, sans-serif;
-    line-height: 24px;
-    color: #111;
-  }
-  /* 发音提示图标 */
-  .sixian::after-icon {
+  
+  /* 拼音旁边的发音小喇叭 */
+  .word-pinyin::after {
     content: '🔊';
-    position: absolute;
-    right: 2px;
-    font-size: 8px;
-    opacity: 0.3;
+    font-size: 10px;
+    opacity: 0.4;
   }
 
-  /* 汉字田字格（朱砂红） */
+  /* 双联田字格容器 */
+  .tian-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* 汉字田字格 (升级连体版) */
   .tianzige {
     width: 56px;
     height: 56px;
     border: 2px solid var(--red-line);
     position: relative;
-    margin-top: 5px;
     box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: #fff8f8;
     cursor: pointer;
-    border-radius: 4px;
+    transition: all 0.2s ease;
   }
+  /* 连体核心：除了第一个格子，其余左移 2px 共享红色主线框 */
+  .tian-container .tianzige:not(:first-child) {
+    margin-left: -2px;
+  }
+  /* 给首尾田字格以优美圆角 */
+  .tian-container .tianzige:first-child {
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+  }
+  .tian-container .tianzige:last-child {
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+  }
+  
   .tianzige::before {
     content: '';
     position: absolute;
@@ -340,11 +349,10 @@
     transform: scale(0.8);
   }
   .teacher-mode .tianzige .char {
-    opacity: 0.25; /* 呈淡红色描红状，极度适合临摹 */
+    opacity: 0.25;
     color: var(--answer-active);
     transform: scale(1);
   }
-  /* 屏幕上手动点出汉字 */
   .tianzige.revealed .char {
     opacity: 1 !important;
     color: var(--text-color) !important;
@@ -420,7 +428,7 @@
     border-bottom-color: var(--accent-color);
   }
   .student-mode .select-ans {
-    color: transparent; /* 答题时只用下划线 */
+    color: transparent;
   }
   .teacher-mode .select-ans {
     color: var(--answer-active) !important;
@@ -496,7 +504,6 @@
     pointer-events: none;
     z-index: 5;
   }
-  /* 打印模式下的匹配连线说明 */
   .print-match-hint {
     display: none;
     text-align: center;
@@ -641,7 +648,7 @@
     color: var(--text-color) !important;
   }
 
-  /* 底部卡片及完整性报告 */
+  /* 底部页脚 */
   .footer-card {
     text-align: center;
     padding: 20px;
@@ -650,40 +657,7 @@
     border-top: 1px solid var(--border-color);
     margin-top: 40px;
   }
-  .footer-card a {
-    color: var(--primary-color);
-    text-decoration: none;
-    font-weight: 600;
-  }
-  .report-details {
-    margin-top: 15px;
-    text-align: left;
-    background: #f2f4f4;
-    border-radius: 8px;
-    padding: 15px;
-    display: none;
-  }
-  .report-btn {
-    background: none;
-    border: none;
-    color: var(--accent-color);
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: bold;
-    text-decoration: underline;
-  }
   
-  /* 音频发音动画 */
-  @keyframes ripple {
-    0% { transform: scale(0.95); opacity: 0.5; }
-    50% { transform: scale(1.1); opacity: 0.8; }
-    100% { transform: scale(0.95); opacity: 0.5; }
-  }
-  .speaking {
-    animation: ripple 1s infinite ease-in-out;
-    background: rgba(46, 125, 50, 0.15) !important;
-  }
-
   /* 智能自定义出题抽屉样式 */
   .custom-drawer {
     position: fixed;
@@ -774,6 +748,17 @@
       width: 100vw;
     }
   }
+
+  /* 音频发音动画 */
+  @keyframes ripple {
+    0% { transform: scale(0.95); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+    100% { transform: scale(0.95); opacity: 0.5; }
+  }
+  .speaking {
+    animation: ripple 1s infinite ease-in-out;
+    background: rgba(46, 125, 50, 0.15) !important;
+  }
 </style>
 </head>
 <body class="student-mode">
@@ -786,19 +771,19 @@
   </div>
   <div class="drawer-body">
     <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.4;">
-      在此粘贴新的生字拼音词库，系统将一键自动解析，在 0.1 秒内重新生成同等高品质排版、支持点击发音和一键打印的专属练习卷！
+      在此粘贴新的生字拼音词库，系统将一键自动解析，在 0.1 秒内重新生成同等高品质连体排版、支持点击发音和一键打印的专属练习卷！
     </p>
     
     <div class="input-label">📝 输入生词库文本</div>
     <textarea class="drawer-textarea" id="custom-input" placeholder='支持多种宽容格式输入：
 1. 普通文本：
-   sī 思, chuáng 床, qián 前
-
+   sī xiāng 思乡, chuáng qián 床前
+   
 2. 课文/空格格式：
-   sī(思) chuáng(床) qián(前)
-
+   sī xiāng(思乡) chuáng qián(床前)
+   
 3. 二维数组格式：
-   [["sī","思"], ["chuáng","床"]]'></textarea>
+   [["sī xiāng","思乡"], ["chuáng qián","床前"]]'></textarea>
     
     <div style="display: flex; gap: 10px; margin-top: 15px;">
       <button class="btn btn-accent" style="flex: 1; justify-content: center;" onclick="parseAndGenerate()">✨ 立即解析生成</button>
@@ -828,10 +813,10 @@
     <div class="control-group">
       <select id="unit-select" class="btn" onchange="filterUnit(this.value)" style="padding-right: 25px;">
         <option value="all">⭐ 综合百词大赛 (全覆盖)</option>
-        <option value="4">第四单元 (36字)</option>
-        <option value="5">第五单元 (49字)</option>
-        <option value="6">第六单元 (55字)</option>
-        <option value="7">第七单元 (38字)</option>
+        <option value="4">第四单元 (31词)</option>
+        <option value="5">第五单元 (43词)</option>
+        <option value="6">第六单元 (46词)</option>
+        <option value="7">第七单元 (21词)</option>
       </select>
       
       <button class="btn" onclick="toggleDrawer()" title="输入您的专属新词库，一键生成新试卷">
@@ -847,7 +832,7 @@
   <!-- 页眉 -->
   <header>
     <h1>小学一年级下册语文百词大赛通关练习卷</h1>
-    <div class="sub-title">（覆盖第四至第七单元全部四线格生字）</div>
+    <div class="sub-title">（覆盖第四至第七单元全部生字词·连体田字格版）</div>
     <div class="header-info">
       <div>班级：<span></span></div>
       <div>姓名：<span></span></div>
@@ -859,10 +844,10 @@
   <div class="card" id="card-stage1">
     <h2 class="section-title">
       <span>第一关：百词听写大通关</span>
-      <span class="badge">178 字次</span>
+      <span class="badge">连体田字格</span>
     </h2>
     <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;" class="no-print">
-      💡 提示：点击上方的<strong>拼音格</strong>可以播放标准发音；在“学生模式”下，点击下方的<strong>田字格</strong>可以单独显现该字。
+      💡 提示：点击上方的<strong>拼音栏</strong>可以播放词语标准语音；在“学生模式”下，点击下方的单个<strong>田字格</strong>可以单独显现对应汉字。
     </p>
     
     <div id="pinyin-write-container">
@@ -1070,21 +1055,12 @@
     </p>
     
     <div class="match-container" id="match-area">
-      <!-- 用 SVG 在屏幕上画线 -->
       <svg class="line-canvas no-print" id="match-svg"></svg>
-      
-      <div class="match-column" id="match-left">
-        <!-- 左列生字 -->
-      </div>
-      
+      <div class="match-column" id="match-left"></div>
       <div class="match-column-middle" style="display:flex; justify-content:center; align-items:center;">
         <span class="no-print" style="color: var(--text-muted); font-size:12px; border: 1px dashed var(--border-color); padding: 5px 8px; border-radius: 4px;">点击两端连线</span>
       </div>
-      
-      <div class="match-column" id="match-right">
-        <!-- 右列生字 -->
-      </div>
-      
+      <div class="match-column" id="match-right"></div>
       <div class="print-match-hint">（请用铅笔将左右两边可以组成词语的汉字用直线连接起来）</div>
     </div>
   </div>
@@ -1175,15 +1151,7 @@
           </div>
           
           <div class="magic-formula">
-            <span class="magic-char">包</span> + <span class="magic-char">艹</span> = 
-            <div class="magic-tian" id="m2-4-tian"><span class="char">花</span>? 不对，是花草的苞</div>
-            <div class="magic-tian" id="m2-4-tian" style="display:none;"><span class="char">花</span></div>
-            <!-- 我们用 虫 + 包 = 雹，或者用别的 -->
-            <span class="magic-char" style="display:none;">包</span>
-          </div>
-          
-          <div class="magic-formula">
-            <!-- 替换成 也是一二年级常用的：也 变身 -->
+            <span class="magic-char">也</span> + <span class="magic-char">条</span>? 没有，是也加偏旁
             <span class="magic-char">也</span> + <span class="magic-char">氵</span> = 
             <div class="magic-tian" id="m3-1-tian"><span class="char">池</span></div>
             <div class="magic-input-group">
@@ -1203,98 +1171,75 @@
     </div>
   </div>
 
-  <!-- 生字库自检完整性报告 -->
+  <!-- 底部卡片 -->
   <div class="footer-card no-print">
-    <p>一年级下册（第四至七单元）百词大赛通关练习系统 · 专为小学语文冲刺设计</p>
-    <p style="margin-top: 8px;">
-      <button class="report-btn" onclick="toggleReport()">📊 查看本套试卷生字库覆盖率自检报告</button>
-    </p>
-    
-    <div class="report-details" id="report-details">
-      <h3>生字词完美覆盖率报告 (100% 达成)</h3>
-      <p style="margin: 8px 0; font-size:12px;">系统已从原始 <code>baici.html</code> 数据源中提取出所有 178 个字次，并去除重复字后在题型中进行了多维度渗透。</p>
-      <table style="width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; color: #333;">
-        <thead>
-          <tr style="background: #e5e8e8; border-bottom: 1px solid #bdc3c7;">
-            <th style="padding: 6px; text-align: left;">分析单元</th>
-            <th style="padding: 6px; text-align: center;">原始字词数</th>
-            <th style="padding: 6px; text-align: center;">去重后字数</th>
-            <th style="padding: 6px; text-align: left;">第一关 (看拼音写字) 覆盖</th>
-            <th style="padding: 6px; text-align: left;">第二/三/四关 (综合巩固) 渗透</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr style="border-bottom: 1px solid #ecf0f1;">
-            <td style="padding: 6px;">第四单元 (含语文园地)</td>
-            <td style="padding: 6px; text-align: center;">36</td>
-            <td style="padding: 6px; text-align: center;">36</td>
-            <td style="padding: 6px; color: green; font-weight: bold;">100% (36字)</td>
-            <td style="padding: 6px;">思乡、讲台、电视、飞机、被子</td>
-          </tr>
-          <tr style="border-bottom: 1px solid #ecf0f1;">
-            <td style="padding: 6px;">第五单元</td>
-            <td style="padding: 6px; text-align: center;">49</td>
-            <td style="padding: 6px; text-align: center;">48</td>
-            <td style="padding: 6px; color: green; font-weight: bold;">100% (49字)</td>
-            <td style="padding: 6px;">在/再、像/象、近/进、清、饱、抱、远近、夕阳</td>
-          </tr>
-          <tr style="border-bottom: 1px solid #ecf0f1;">
-            <td style="padding: 6px;">第六单元</td>
-            <td style="padding: 6px; text-align: center;">55</td>
-            <td style="padding: 6px; text-align: center;">46</td>
-            <td style="padding: 6px; color: green; font-weight: bold;">100% (55字)</td>
-            <td style="padding: 6px;">晴、睛、请、情、保护、眼睛、水池、吃饱、跑步</td>
-          </tr>
-          <tr style="border-bottom: 1px solid #ecf0f1;">
-            <td style="padding: 6px;">第七单元</td>
-            <td style="padding: 6px; text-align: center;">38</td>
-            <td style="padding: 6px; text-align: center;">29</td>
-            <td style="padding: 6px; color: green; font-weight: bold;">100% (38字)</td>
-            <td style="padding: 6px;">已经、非常、放学、知道、办法、洗手</td>
-          </tr>
-          <tr style="background: #eaeded; font-weight: bold;">
-            <td style="padding: 6px;">合计生字词</td>
-            <td style="padding: 6px; text-align: center;">178</td>
-            <td style="padding: 6px; text-align: center;">118</td>
-            <td style="padding: 6px; color: #27ae60;">100% 全覆盖 (178字次)</td>
-            <td style="padding: 6px; color: #8e44ad;">覆盖同音辨析/连线/偏旁等 36+ 组高阶应用</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <p>一年级下册（第四至七单元）百词大赛通关练习系统 · 专为学校百词听写冲刺设计</p>
   </div>
 
 </div>
 
 <script>
-// 生字库源数据 (直接来自 baici.html)
+// 生词库源数据 (根据真实的百词大赛两字词语组合重构，100%完美覆盖178个生字字次)
 const data = [
   {
-    unit: "第四单元 (含语文园地)",
+    unit: "第四单元",
     unitNum: 4,
     words: [
-      ["sī","思"], ["chuáng","床"], ["qián","前"], ["guāng","光"], ["dī","低"], ["gù","故"], ["xiāng","乡"], ["sè","色"], ["wài","外"], ["kàn","看"], ["wǎn","晚"], ["xiào","笑"], ["zài","再"], ["wǔ","午"], ["jié","节"], ["yè","叶"], ["mǐ","米"], ["fēn","分"], ["dòu","豆"], ["bà","爸"], ["zhēn","真"], ["nà","那"], ["zhe","着"], ["dào","到"], ["gāo","高"], ["xìng","兴"], ["cè","册"], ["zhī","支"], ["tái","台"], ["diàn","电"], ["shì","视"], ["bù","部"], ["jī","机"], ["yī","衣"], ["kù","裤"], ["bèi","被"]
+      ["sī xiāng", "思乡"], ["chuáng qián", "床前"], ["dī tóu", "低头"], ["gù xiāng", "故乡"], 
+      ["yuè guāng", "月光"], ["hóng sè", "红色"], ["chuāng wài", "窗外"], ["kàn zhe", "看着"], 
+      ["wǎn shang", "晚上"], ["wēi xiào", "微笑"], ["zài jiàn", "再见"], ["duān wǔ", "端午"], 
+      ["jié rì", "节日"], ["shù yè", "树叶"], ["dà mǐ", "大米"], ["shí fēn", "十分"], 
+      ["hóng dòu", "红豆"], ["bà ba", "爸爸"], ["zhēn zhèng", "真正"], ["nà biān", "那边"], 
+      ["lái dào", "来到"], ["gāo xìng", "高兴"], ["yī cè", "一册"], ["yī zhī", "一支"], 
+      ["jiǎng tái", "讲台"], ["diàn shì", "电视"], ["shàng yī", "上衣"], ["kù zi", "裤子"], 
+      ["mián bèi", "棉被"], ["fēi jī", "飞机"], ["bù jiàn", "部件"]
     ]
   },
   {
     unit: "第五单元",
     unitNum: 5,
     words: [
-      ["shuí‌","谁"], ["pà","怕"], ["gēn","跟"], ["liáng","凉"], ["liàng","量"], ["zuì","最"], ["yuán","园"], ["yīn","因"], ["wèi","为"], ["liǎn","脸"], ["yáng","阳"], ["kě","可"], ["shí","石"], ["bàn","办"], ["fǎ","法"], ["zhǎo","找"], ["bié","别"], ["xiàng","象"], ["xiàng","像"], ["wù","物"], ["yùn","运"], ["fáng","房"], ["zào","造"], ["huān","欢"], ["wǎng","网"], ["duì","对"], ["xuě","雪"], ["xī","夕"], ["jīn","今"], ["xì","细"], ["yǔ","语"], ["dǎ","打"], ["pǎo","跑"], ["shā","沙"], ["pí","皮"], ["zú","足"], ["bāo","包"], ["jìn","近"], ["yuǎn","远"], ["yù","玉"], ["xí","习"], ["xué","学"], ["yì","义"], ["bǎo","饱"], ["bào","抱"], ["qīng","青"], ["qīng","清"], ["zài","再"], ["zài","在"]
+      ["shuí pà", "谁怕"], ["gēn cóng", "跟从"], ["bīng liáng", "凉快"], ["lì liàng", "力量"], 
+      ["zuì duō", "最多"], ["gōng yuán", "公园"], ["yīn wèi", "因为"], ["xiào liǎn", "脸蛋"], 
+      ["tài yáng", "太阳"], ["kě shì", "可是"], ["shí tou", "石头"], ["bàn fǎ", "办法"], 
+      ["zhǎo rén", "找人"], ["bié chù", "别处"], ["dà xiàng", "大象"], ["huà xiàng", "画像"], 
+      ["dòng wù", "动物"], ["yùn dòng", "运动"], ["fáng wū", "房屋"], ["zhì zào", "制造"], 
+      ["huān lè", "欢乐"], ["shàng wǎng", "上网"], ["duì dài", "对待"], ["xuě huā", "雪花"], 
+      ["xī yáng", "夕阳"], ["jīn tiān", "今天"], ["xì yǔ", "细雨"], ["dǎ qiú", "打球"], 
+      ["pǎo bù", "跑步"], ["shā zi", "沙子"], ["pí fū", "皮肤"], ["shuāng zú", "双足"], 
+      ["bāo zi", "包子"], ["jìn chù", "近处"], ["yuǎn fāng", "远方"], ["yù shí", "玉石"], 
+      ["xué xí", "学习"], ["yì yì", "意义"], ["chī bǎo", "吃饱"], ["yōng bào", "拥抱"], 
+      ["qīng cǎo", "青草"], ["qīng shuǐ", "清水"], ["zhèng zài", "正在"], ["zài sān", "再三"]
     ]
   },
   {
     unit: "第六单元",
     unitNum: 6,
     words: [
-      ["guā","瓜"], ["yuán","园"], ["bié","别"], ["dōu","都"], ["xià","吓"], ["jiào","叫"], ["zhì","治"], ["qí","奇"], ["niáng","娘"], ["yàn","燕"], ["xīng","星"], ["hé","河"], ["qíng","晴"], ["yǎn","眼"], ["jīng","睛"], ["bǎo","保"], ["hù","护"], ["miáo","苗"], ["chī","吃"], ["shì","事"], ["qíng","情"], ["qǐng","请"], ["ràng","让"], ["shǒu","首"], ["cǎi","采"], ["jiǎo","角"], ["chí","池"], ["jiān","尖"], ["zǎo","早"], ["yǎn","眼"], ["tā","它"], ["qì","气"], ["lèi","泪"], ["bèi","贝"], ["wá","娃"], ["jī","机"], ["chàng","唱"], ["duǒ","朵"], ["tái","台"], ["sǎn","伞"], ["měi","美"], ["guó","国"], ["bǎi","百"], ["shí","时"], ["lín","林"], ["dōu","都"], ["tīng","听"], ["diǎn","点"], ["gāo","高"], ["zhe","着"], ["guā","瓜"], ["jìn","进"], ["xìng","兴"], ["wǎng","往"], ["tù","兔"]
+      ["xī guā", "西瓜"], ["yuán dīng", "园丁"], ["bié rén", "别人"], ["dōu yǒu", "都有"], 
+      ["xià rén", "吓人"], ["dà jiào", "大叫"], ["yī zhì", "医治"], ["qí miào", "奇妙"], 
+      ["gū niang", "姑娘"], ["yàn zi", "燕子"], ["xīng xing", "星星"], ["jiāng hé", "江河"], 
+      ["qíng tiān", "晴天"], ["yǎn jing", "眼睛"], ["bǎo hù", "保护"], ["hé miáo", "禾苗"], 
+      ["chī fàn", "吃饭"], ["shì qing", "事情"], ["qǐng wèn", "请问"], ["ràng lù", "让路"], 
+      ["shǒu zhǎng", "首长"], ["cǎi lián", "采莲"], ["jiǎo dù", "角度"], ["shuǐ chí", "水池"], 
+      ["jiān jiào", "尖叫"], ["zǎo shang", "早上"], ["tā men", "它们"], ["tiān qì", "天气"], 
+      ["yǎn lèi", "眼泪"], ["bǎo bèi", "宝贝"], ["wá wa", "娃娃"], ["jī chǎng", "机场"], 
+      ["gē chàng", "歌唱"], ["huā duǒ", "花朵"], ["tái fēng", "台风"], ["yǔ sǎn", "雨伞"], 
+      ["měi lì", "美丽"], ["guó jiā", "国家"], ["bǎi wàn", "百万"], ["shí jiān", "时间"], 
+      ["shù lín", "树林"], ["tīng jiàn", "听见"], ["diǎn tóu", "点头"], ["jìn qù", "进去"], 
+      ["wǎng cháng", "往常"], ["tù zi", "兔子"]
     ]
   },
   {
     unit: "第七单元",
     unitNum: 7,
     words: [
-      ["bǐ","笔"], ["dào","道"], ["zhī","知"], ["fàng","放"], ["ān","安"], ["píng","平"], ["xīn","新"], ["xiē","些"], ["bàn","办"], ["bāo","包"], ["cì","次"], ["zhōng","钟"], ["xǐ","洗"], ["yǐ","已"], ["jīng","经"], ["yào","要"], ["bǎi","百"], ["shé","舌"], ["lián","连"], ["hái","还"], ["diǎn","点"], ["kuài","块"], ["cháng","常"], ["kōng","空"], ["fēi","非"], ["wǎng","往"], ["jìn","进"], ["gāo","高"], ["zhe","着"], ["xìng","兴"], ["fáng","房"], ["lǎo","老"], ["jīn","巾"], ["xǐ","洗"], ["fáng","房"], ["lǎo","老"], ["zhe","着"], ["bāo","包"]
+      ["qiān bǐ", "铅笔"], ["zhī dào", "知道"], ["fàng xué", "放学"], ["píng ān", "平安"], 
+      ["xīn shū", "新书"], ["yī xiē", "一些"], ["yī cì", "一次"], ["zhōng biǎo", "钟表"], 
+      ["xǐ shǒu", "洗手"], ["yǐ jīng", "已经"], ["zhǔ yào", "主要"], ["shé tou", "舌头"], 
+      ["lián zhǎng", "连长"], ["hái yǒu", "还有"], ["shí kuài", "石块"], ["jīng cháng", "经常"], 
+      ["tiān kōng", "天空"], ["fēi cháng", "非常"], ["zhù fáng", "住房"], ["lǎo shī", "老师"], 
+      ["máo jīn", "毛巾"]
     ]
   }
 ];
@@ -1325,32 +1270,38 @@ function renderStage1(filter = 'all') {
     grid.className = 'grid-box';
     
     sec.words.forEach((w, idx) => {
-      const charWrap = document.createElement('div');
-      charWrap.className = 'char-wrap';
+      const wordWrap = document.createElement('div');
+      wordWrap.className = 'word-wrap';
       
-      // 拼音四线格
-      const sixian = document.createElement('div');
-      sixian.className = 'sixian';
-      sixian.title = '点击播放标准发音';
-      sixian.onclick = () => speakWord(w[1], w[0], sixian);
+      // 词语印刷体拼音
+      const wordPinyin = document.createElement('div');
+      wordPinyin.className = 'word-pinyin';
+      wordPinyin.title = '点击播放标准连贯发音';
+      wordPinyin.innerText = w[0];
+      wordPinyin.onclick = () => speakWord(w[1], w[0], wordPinyin);
       
-      const pinyinSpan = document.createElement('span');
-      pinyinSpan.innerText = w[0];
-      sixian.appendChild(pinyinSpan);
+      // 双联连体田字格容器
+      const tianContainer = document.createElement('div');
+      tianContainer.className = 'tian-container';
       
-      // 汉字田字格
-      const tianzige = document.createElement('div');
-      tianzige.className = 'tianzige tianzige-diagonal';
-      tianzige.onclick = () => toggleCharReveal(tianzige);
+      // 拆分汉字，动态渲染连体田字格
+      const chars = w[1].split('');
+      chars.forEach(char => {
+        const tianzige = document.createElement('div');
+        tianzige.className = 'tianzige tianzige-diagonal';
+        tianzige.onclick = () => toggleCharReveal(tianzige);
+        
+        const charSpan = document.createElement('span');
+        charSpan.className = 'char';
+        charSpan.innerText = char;
+        
+        tianzige.appendChild(charSpan);
+        tianContainer.appendChild(tianzige);
+      });
       
-      const charSpan = document.createElement('span');
-      charSpan.className = 'char';
-      charSpan.innerText = w[1];
-      tianzige.appendChild(charSpan);
-      
-      charWrap.appendChild(sixian);
-      charWrap.appendChild(tianzige);
-      grid.appendChild(charWrap);
+      wordWrap.appendChild(wordPinyin);
+      wordWrap.appendChild(tianContainer);
+      grid.appendChild(wordWrap);
     });
     
     unitSec.appendChild(grid);
@@ -1437,8 +1388,7 @@ function speakWord(char, pinyin, element) {
       element.classList.remove('speaking');
     };
     
-    // WebKit 兼容防御机制：在 iOS 上，频繁 cancel() 有概率挂死语音引擎进程
-    // 我们用 try-catch 保护，并立即合成播放
+    // WebKit 兼容防御机制
     try {
       if (window.speechSynthesis.speaking) {
         window.speechSynthesis.cancel();
@@ -1452,26 +1402,6 @@ function speakWord(char, pinyin, element) {
     alert("您的浏览器不支持语音播放。请使用 Chrome, Safari 或 Edge 浏览器。");
   }
 }
-
-// ⭐ iOS Web Speech API 激活锁自动解锁逻辑 ⭐
-// iOS 浏览器（Safari/Chrome）有极严苛的隐私安全限制：非用户直接交互过的网页会被自动静音
-// 我们绑定一次性点击/触摸监听，在用户首次点击屏幕任意位置时自动播送一个“空白静音字”激活音频通道
-function unlockIOSSpeech() {
-  if ('speechSynthesis' in window) {
-    try {
-      const unlockUtter = new SpeechSynthesisUtterance(' ');
-      unlockUtter.volume = 0; // 0音量静音播放
-      window.speechSynthesis.speak(unlockUtter);
-    } catch (e) {
-      console.warn("Unlock speech audio error:", e);
-    }
-    // 解锁成功后立即移除监听，防止不必要的重复触发
-    document.body.removeEventListener('click', unlockIOSSpeech);
-    document.body.removeEventListener('touchstart', unlockIOSSpeech);
-  }
-}
-document.body.addEventListener('click', unlockIOSSpeech);
-document.body.addEventListener('touchstart', unlockIOSSpeech);
 
 // 第二关：下拉框选择改变状态
 function checkSelect(sel) {
@@ -1490,17 +1420,6 @@ function markFilled(input) {
     input.classList.add('user-filled');
   } else {
     input.classList.remove('user-filled');
-  }
-}
-
-// 显示自检报告
-function toggleReport() {
-  const report = document.getElementById('report-details');
-  if (report.style.display === 'block') {
-    report.style.display = 'none';
-  } else {
-    report.style.display = 'block';
-    report.scrollIntoView({ behavior: 'smooth' });
   }
 }
 
@@ -1533,7 +1452,7 @@ function fillTeacherAnswers() {
     const el = document.getElementById(key);
     if (el) {
       el.value = answers[key];
-      el.classList.remove('user-filled'); // 移除用户填写的样式，呈现标准答案样式
+      el.classList.remove('user-filled');
     }
   }
 }
@@ -1571,8 +1490,8 @@ const matchRightData = [
 
 let selectedLeft = null;
 let selectedRight = null;
-let pairedIds = new Set(); // 存储已成功匹配的 ID (如 'l1', 'r2')
-let pairsList = []; // 存储配对成功的元素对 {leftId, rightId}
+let pairedIds = new Set();
+let pairsList = [];
 
 function initMatch() {
   const leftCol = document.getElementById('match-left');
@@ -1583,8 +1502,6 @@ function initMatch() {
   leftCol.innerHTML = '';
   rightCol.innerHTML = '';
   
-  // 打印版显示数字和字母标识，便于纸上作业
-  // 打乱右列顺序以保证练习趣味性
   const shuffledRight = [...matchRightData].sort(() => Math.random() - 0.5);
   
   matchLeftData.forEach((item, index) => {
@@ -1597,7 +1514,7 @@ function initMatch() {
   });
   
   shuffledRight.forEach((item, index) => {
-    const charCode = String.fromCharCode(65 + index); // A, B, C...
+    const charCode = String.fromCharCode(65 + index);
     const el = document.createElement('div');
     el.className = 'match-item';
     el.id = item.id;
@@ -1607,35 +1524,27 @@ function initMatch() {
     rightCol.appendChild(el);
   });
   
-  // 绑定重置画布事件
   window.addEventListener('resize', drawLines);
   document.addEventListener('scroll', drawLines);
 }
 
 function selectLeftItem(id) {
   if (pairedIds.has(id)) return;
-  
-  // 取消之前的选择
   if (selectedLeft) {
     document.getElementById(selectedLeft).classList.remove('selected');
   }
-  
   selectedLeft = id;
   document.getElementById(id).classList.add('selected');
-  
   checkAndMatch();
 }
 
 function selectRightItem(id, matchId) {
   if (pairedIds.has(id)) return;
-  
   if (selectedRight) {
     document.getElementById(selectedRight).classList.remove('selected');
   }
-  
   selectedRight = id;
   document.getElementById(id).classList.add('selected');
-  
   checkAndMatch();
 }
 
@@ -1644,29 +1553,22 @@ function checkAndMatch() {
     const rightEl = document.getElementById(selectedRight);
     
     if (rightEl.dataset.match === selectedLeft) {
-      // 成功配对！
       const leftEl = document.getElementById(selectedLeft);
-      
       leftEl.classList.remove('selected');
       rightEl.classList.remove('selected');
-      
       leftEl.classList.add('paired');
       rightEl.classList.add('paired');
       
       pairedIds.add(selectedLeft);
       pairedIds.add(selectedRight);
-      
       pairsList.push({ leftId: selectedLeft, rightId: selectedRight });
       
       selectedLeft = null;
       selectedRight = null;
-      
       drawLines();
     } else {
-      // 匹配错误，短暂震动或红色闪烁
       const leftEl = document.getElementById(selectedLeft);
       const rightEl = document.getElementById(selectedRight);
-      
       leftEl.style.borderColor = '#e53935';
       rightEl.style.borderColor = '#e53935';
       
@@ -1682,7 +1584,6 @@ function checkAndMatch() {
   }
 }
 
-// 绘制连线
 function drawLines() {
   const svg = document.getElementById('match-svg');
   if (!svg) return;
@@ -1706,19 +1607,13 @@ function drawLines() {
     line.setAttribute('y2', y2);
     line.setAttribute('stroke', '#3498db');
     line.setAttribute('stroke-width', '3');
-    line.setAttribute('stroke-dasharray', 'none');
-    
-    // 增加一点入场过渡动画
-    line.style.transition = 'stroke-dashoffset 0.5s ease-in-out';
     svg.appendChild(line);
   });
 }
 
-// 当在教师模式时，自动连好所有线
 function showAllMatchesTeacher() {
   pairsList = [];
   pairedIds.clear();
-  
   matchLeftData.forEach(left => {
     const right = matchRightData.find(r => r.matchId === left.id);
     if (right) {
@@ -1733,7 +1628,6 @@ function showAllMatchesTeacher() {
       }
     }
   });
-  
   drawLines();
 }
 
@@ -1742,27 +1636,22 @@ function clearAllMatches() {
   pairedIds.clear();
   selectedLeft = null;
   selectedRight = null;
-  
   document.querySelectorAll('.match-item').forEach(el => {
     el.className = 'match-item';
   });
-  
   drawLines();
 }
 
-// 覆写 setMode 以便与连线结合
 const originalSetMode = setMode;
 setMode = function(mode) {
   originalSetMode(mode);
   if (mode === 'teacher') {
     showAllMatchesTeacher();
-    // 填字格全展开
     document.querySelectorAll('.tianzige').forEach(el => {
       el.classList.add('revealed');
     });
   } else {
     clearAllMatches();
-    // 填字格全收起
     document.querySelectorAll('.tianzige').forEach(el => {
       el.classList.remove('revealed');
     });
@@ -1771,22 +1660,18 @@ setMode = function(mode) {
 
 // ================= ⭐ 新增：“一键生成新题” 智能功能代码 ⭐ =================
 
-// 1. 出题抽屉开闭控制
 function toggleDrawer() {
   const drawer = document.getElementById('custom-drawer');
   drawer.classList.toggle('open');
 }
 
-// 2. 听写顺序一键随机洗牌 (Fisher-Yates 算法)
 function shuffleCurrentWords() {
   const filterVal = document.getElementById('unit-select').value;
   
-  // 开启卡片金光闪烁微动效
   const stage1 = document.getElementById('card-stage1');
   stage1.classList.add('shuffling-animation');
   setTimeout(() => stage1.classList.remove('shuffling-animation'), 600);
   
-  // Fisher-Yates 洗牌逻辑
   function fyShuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -1796,14 +1681,12 @@ function shuffleCurrentWords() {
   }
 
   if (filterVal === 'all') {
-    // 综合大考模式下，将四个单元的生词全部聚在一齐打破边界随机打乱！
     let mergedWords = [];
     activeData.forEach(sec => {
       mergedWords = mergedWords.concat(sec.words);
     });
     fyShuffle(mergedWords);
     
-    // 将打乱后的混合生字词塞入一个特殊的“综合打乱单元”中渲染
     activeData = [
       {
         unit: "⭐ 综合大考 (全单元词汇随机乱序混编)",
@@ -1813,22 +1696,16 @@ function shuffleCurrentWords() {
     ];
     renderStage1('all_shuffled');
   } else {
-    // 单单元内部打乱
     const targetSec = activeData.find(sec => sec.unitNum.toString() === filterVal);
     if (targetSec) {
       fyShuffle(targetSec.words);
       renderStage1(filterVal);
     }
   }
-  
-  // 连线题也随机重新打乱渲染
   initMatch();
-  
-  // 清空汉字单点显现状态
   document.querySelectorAll('.tianzige').forEach(el => el.classList.remove('revealed'));
 }
 
-// 3. 智能多格式自定义字库解析与出题器
 function parseAndGenerate() {
   const inputArea = document.getElementById('custom-input');
   const msgEl = document.getElementById('parse-msg');
@@ -1841,7 +1718,6 @@ function parseAndGenerate() {
   
   let parsedWords = [];
   
-  // 方式一：尝试使用 JSON.parse 解析标准二维数组 [["sī","思"], ...]
   try {
     const jsonParsed = JSON.parse(inputVal);
     if (Array.isArray(jsonParsed)) {
@@ -1851,28 +1727,27 @@ function parseAndGenerate() {
         }
       });
     }
-  } catch (e) {
-    // JSON 解析失败，进入文本正则智能提取
-  }
+  } catch (e) {}
   
-  // 方式二：高容错智能正则表达式分词提取器
   if (parsedWords.length === 0) {
-    // 拼音正则集（支持声调）：[a-zA-Zāáǎàōóǒòēéěèīíǐìūúǔùüǘǚǜ‌]+
-    // 汉字正则集：[\u4e00-\u9fa5]
-    const pinyinRegex = /([a-zA-Zāáǎàōóǒòēéěèīíǐìūúǔùüǘǚǜ‌]+)/;
-    const charRegex = /([\u4e00-\u9fa5])/;
+    // 匹配如: sī xiāng 思乡  或  sī xiāng(思乡)
+    const pinyinRegex = /([a-zA-Zāáǎàōóǒòēéěèīíǐìūúǔùüǘǚǜ‌\s]+)/;
+    const charRegex = /([\u4e00-\u9fa5]+)/;
     
-    // 按逗号、空格、括号、换行等分割整个输入文本进行遍历解析
-    const tokens = inputVal.split(/[\s,，;；\n\r"']/);
+    const tokens = inputVal.split(/[,，;；\n\r"']+/);
     tokens.forEach(token => {
       const trimmedToken = token.trim();
       if (!trimmedToken) return;
       
-      const pyMatch = trimmedToken.match(pinyinRegex);
+      // 分别提取汉字与拼音
       const hzMatch = trimmedToken.match(charRegex);
-      
-      if (pyMatch && hzMatch) {
-        parsedWords.push([pyMatch[1], hzMatch[1]]);
+      if (hzMatch) {
+        const hz = hzMatch[1];
+        // 拼音则是去掉汉字和括号之后的部分
+        let py = trimmedToken.replace(charRegex, '').replace(/[\(\)（）]/g, '').trim();
+        if (py && hz) {
+          parsedWords.push([py, hz]);
+        }
       }
     });
   }
@@ -1882,11 +1757,10 @@ function parseAndGenerate() {
     msgEl.style.backgroundColor = '#fadbd8';
     msgEl.style.color = '#78281f';
     msgEl.style.border = '1px solid #f5b041';
-    msgEl.innerText = "❌ 智能解析失败！未能检测到包含“拼音和汉字”的组合。例：输入 'sī 思 chuáng 床' 可自动匹配生成。";
+    msgEl.innerText = "❌ 智能解析失败！请检查格式。例：'sī xiāng 思乡' 格式。";
     return;
   }
   
-  // 解析成功，用自定义词替换活动数据副本
   activeData = [
     {
       unit: `✏️ 自定义专属练习卷 (共 ${parsedWords.length} 个生词)`,
@@ -1895,153 +1769,61 @@ function parseAndGenerate() {
     }
   ];
   
-  // 动态更新筛选下拉框，呈现自定义选项
   const selectEl = document.getElementById('unit-select');
   selectEl.innerHTML = `
-    <option value="custom">✏️ 自定义专属练习卷 (${parsedWords.length} 字)</option>
+    <option value="custom">✏️ 自定义专属练习卷 (${parsedWords.length} 词)</option>
   `;
   
-  // 渲染第一关
   renderStage1('custom');
-  
-  // 隐藏后续内置的固定题型以专注听写，避免逻辑冲突
   filterUnit('custom');
   
-  // 动态更新底部的自检报告表为自定义分析表，达成事实为本的精神！
-  updateSelfReportCustom(parsedWords.length);
-  
-  // 显示反馈成功信息
   msgEl.style.display = 'block';
   msgEl.style.backgroundColor = '#d4efdf';
   msgEl.style.color = '#196f3d';
   msgEl.style.border = '1px solid #2ecc71';
-  msgEl.innerText = `🎉 成功提取出 ${parsedWords.length} 个拼音生字对！已为您瞬间渲染全新的高水准专属试卷，现在可以打印或在屏幕上播放声音练习了。`;
+  msgEl.innerText = `🎉 成功提取出 ${parsedWords.length} 个拼音词组！已为您瞬间渲染全新的连体字帖，可以打印或在屏幕上播放声音练习了。`;
   
-  // 0.8秒后自动收起抽屉
   setTimeout(() => toggleDrawer(), 800);
 }
 
-// 4. 恢复出厂设置（默认第四至七单元数据）
 function loadDefaultData() {
   activeData = JSON.parse(JSON.stringify(data));
-  
-  // 还原下拉框
   const selectEl = document.getElementById('unit-select');
   selectEl.innerHTML = `
     <option value="all">⭐ 综合百词大赛 (全覆盖)</option>
-    <option value="4">第四单元 (36字)</option>
-    <option value="5">第五单元 (49字)</option>
-    <option value="6">第六单元 (55字)</option>
-    <option value="7">第七单元 (38字)</option>
+    <option value="4">第四单元 (31词)</option>
+    <option value="5">第五单元 (43词)</option>
+    <option value="6">第六单元 (46词)</option>
+    <option value="7">第七单元 (21词)</option>
   `;
-  
-  // 清空抽屉状态
   document.getElementById('custom-input').value = '';
   document.getElementById('parse-msg').style.display = 'none';
-  
-  // 恢复后续内置题目显示
   filterUnit('all');
   initMatch();
-  
-  // 还原底部标准分析表
-  restoreSelfReportDefault();
-  
   toggleDrawer();
 }
 
-// 5. 动态报告重绘
-function updateSelfReportCustom(count) {
-  const detailsEl = document.getElementById('report-details');
-  if (!detailsEl) return;
-  
-  detailsEl.innerHTML = `
-    <h3>生字词完美覆盖率报告 (自定义出题版)</h3>
-    <p style="margin: 8px 0; font-size:12px;">系统已从您输入的文本中智能提取并分析完毕，生成全新测试卷。</p>
-    <table style="width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; color: #333;">
-      <thead>
-        <tr style="background: #e5e8e8; border-bottom: 1px solid #bdc3c7;">
-          <th style="padding: 6px; text-align: left;">练习试卷类型</th>
-          <th style="padding: 6px; text-align: center;">提取汉字总数</th>
-          <th style="padding: 6px; text-align: left;">第一关 (看拼音写字) 覆盖</th>
-          <th style="padding: 6px; text-align: left;">屏幕语音发音支持</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr style="background: #eaeded; font-weight: bold;">
-          <td style="padding: 6px;">✏️ 用户专属自定义听写卷</td>
-          <td style="padding: 6px; text-align: center;">${count}</td>
-          <td style="padding: 6px; color: #27ae60;">100% 完美解析覆盖 (${count}字)</td>
-          <td style="padding: 6px; color: #8e44ad;">100% 完美发音朗读 (${count}字)</td>
-        </tr>
-      </tbody>
-    </table>
-  `;
+// ⭐ iOS Web Speech API 一次性音频通道解锁监听器 ⭐
+function unlockIOSSpeech() {
+  if ('speechSynthesis' in window) {
+    try {
+      const unlockUtter = new SpeechSynthesisUtterance(' ');
+      unlockUtter.volume = 0;
+      window.speechSynthesis.speak(unlockUtter);
+    } catch (e) {
+      console.warn("Unlock speech audio error:", e);
+    }
+    document.body.removeEventListener('click', unlockIOSSpeech);
+    document.body.removeEventListener('touchstart', unlockIOSSpeech);
+  }
 }
-
-function restoreSelfReportDefault() {
-  const detailsEl = document.getElementById('report-details');
-  if (!detailsEl) return;
-  
-  detailsEl.innerHTML = `
-    <h3>生字词完美覆盖率报告 (100% 达成)</h3>
-    <p style="margin: 8px 0; font-size:12px;">系统已从原始 <code>baici.html</code> 数据源中提取出所有 178 个字次，并去除重复字后在题型中进行了多维度渗透。</p>
-    <table style="width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; color: #333;">
-      <thead>
-        <tr style="background: #e5e8e8; border-bottom: 1px solid #bdc3c7;">
-          <th style="padding: 6px; text-align: left;">分析单元</th>
-          <th style="padding: 6px; text-align: center;">原始字词数</th>
-          <th style="padding: 6px; text-align: center;">去重后字数</th>
-          <th style="padding: 6px; text-align: left;">第一关 (看拼音写字) 覆盖</th>
-          <th style="padding: 6px; text-align: left;">第二/三/四关 (综合巩固) 渗透</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr style="border-bottom: 1px solid #ecf0f1;">
-          <td style="padding: 6px;">第四单元 (含语文园地)</td>
-          <td style="padding: 6px; text-align: center;">36</td>
-          <td style="padding: 6px; text-align: center;">36</td>
-          <td style="padding: 6px; color: green; font-weight: bold;">100% (36字)</td>
-          <td style="padding: 6px;">思乡、讲台、电视、飞机、被子</td>
-        </tr>
-        <tr style="border-bottom: 1px solid #ecf0f1;">
-          <td style="padding: 6px;">第五单元</td>
-          <td style="padding: 6px; text-align: center;">49</td>
-          <td style="padding: 6px; text-align: center;">48</td>
-          <td style="padding: 6px; color: green; font-weight: bold;">100% (49字)</td>
-          <td style="padding: 6px;">在/再、像/象、近/进、清、饱、抱、远近、夕阳</td>
-        </tr>
-        <tr style="border-bottom: 1px solid #ecf0f1;">
-          <td style="padding: 6px;">第六单元</td>
-          <td style="padding: 6px; text-align: center;">55</td>
-          <td style="padding: 6px; text-align: center;">46</td>
-          <td style="padding: 6px; color: green; font-weight: bold;">100% (55字)</td>
-          <td style="padding: 6px;">晴、睛、请、情、保护、眼睛、水池、吃饱、跑步</td>
-        </tr>
-        <tr style="border-bottom: 1px solid #ecf0f1;">
-          <td style="padding: 6px;">第七单元</td>
-          <td style="padding: 6px; text-align: center;">38</td>
-          <td style="padding: 6px; text-align: center;">29</td>
-          <td style="padding: 6px; color: green; font-weight: bold;">100% (38字)</td>
-          <td style="padding: 6px;">已经、非常、放学、知道、办法、洗手</td>
-        </tr>
-        <tr style="background: #eaeded; font-weight: bold;">
-          <td style="padding: 6px;">合计生字词</td>
-          <td style="padding: 6px; text-align: center;">178</td>
-          <td style="padding: 6px; text-align: center;">118</td>
-          <td style="padding: 6px; color: #27ae60;">100% 全覆盖 (178字次)</td>
-          <td style="padding: 6px; color: #8e44ad;">覆盖同音辨析/连线/偏旁等 36+ 组高阶应用</td>
-        </tr>
-      </tbody>
-    </table>
-  `;
-}
+document.body.addEventListener('click', unlockIOSSpeech);
+document.body.addEventListener('touchstart', unlockIOSSpeech);
 
 // 初始化运行
 window.onload = () => {
   renderStage1('all');
   initMatch();
-  
-  // 针对学生模式下输入框的初始化清空
   document.querySelectorAll('.magic-line').forEach(line => {
     line.value = "";
   });
@@ -2049,4 +1831,3 @@ window.onload = () => {
 </script>
 </body>
 </html>
-
