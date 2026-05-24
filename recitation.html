@@ -456,10 +456,10 @@
       <div class="music-widget">
         <button class="play-btn" id="play-btn" onclick="togglePlay()">▶</button>
         <select id="bgm-select" onchange="changeBGM(this.value)" style="border:none; background:transparent; font-size:12.5px; font-weight:700; color:var(--text-dark); cursor:pointer; outline:none; padding-right:15px; appearance:none; background: url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%232c3e50\' stroke-width=\'2.5\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Cpath d=\'m6 9 6 6 6-6\'/%3E%3C/svg%3E') no-repeat right center; background-size: 10px;">
-          <option value="yue_zhi_gu_xiang.mp3">🎵 默认伴奏：《月之故乡》B站原声 (极力推荐)</option>
-          <option value="https://music.163.com/song/media/outer/url?id=5256241.mp3">🎵 备用 1：舒曼《梦幻曲》 (极致安静)</option>
-          <option value="https://music.163.com/song/media/outer/url?id=26237341.mp3">🎵 备用 2：贝多芬《月光第一乐章》 (静谧月夜)</option>
-          <option value="https://music.163.com/song/media/outer/url?id=141976.mp3">🎵 备用 3：肖邦《夜曲》 (唯美温柔舒缓)</option>
+          <option value="bgm-default">🎵 默认伴奏：《月之故乡》B站原声 (极力推荐)</option>
+          <option value="bgm-meng_huan">🎵 备用 1：舒曼《梦幻曲》 (极致安静)</option>
+          <option value="bgm-yue_guang">🎵 备用 2：贝多芬《月光第一乐章》 (静谧月夜)</option>
+          <option value="bgm-ye_qu">🎵 备用 3：肖邦《夜曲》 (唯美温柔舒缓)</option>
         </select>
       </div>
     </div>
@@ -503,8 +503,12 @@
 
 </div>
 
-<!-- 伴奏音频元素 -->
-<audio id="bg-music" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" loop></audio>
+<!-- 伴奏音频元素 (多轨并行，完美应对 iOS 音频解锁) -->
+<audio id="bgm-default" src="yue_zhi_gu_xiang.mp3" loop preload="auto"></audio>
+<audio id="bgm-meng_huan" src="https://music.163.com/song/media/outer/url?id=5256241.mp3" loop preload="auto"></audio>
+<audio id="bgm-yue_guang" src="https://music.163.com/song/media/outer/url?id=26237341.mp3" loop preload="auto"></audio>
+<audio id="bgm-ye_qu" src="https://music.163.com/song/media/outer/url?id=141976.mp3" loop preload="auto"></audio>
+<audio id="bgm-custom" loop preload="auto"></audio>
 
 <script>
 // 朗诵词数据结构 (已贴心订正错别字并作出了排版美化)
@@ -520,23 +524,28 @@ const lines = [
   "我爱您，中国！"
 ];
 
+let currentBGMId = 'bgm-default';
+
 // 初始化伴奏地址
-const bgMusic = document.getElementById('bg-music');
 const customUrlInput = document.getElementById('custom-music-url');
 const storedMusicUrl = localStorage.getItem('recitation_bg_music_url');
 if (storedMusicUrl) {
-  bgMusic.src = storedMusicUrl;
   customUrlInput.value = storedMusicUrl;
   
   // 页面加载完成后追加自定义选项并选中它
   window.addEventListener('DOMContentLoaded', () => {
+    const customAud = document.getElementById('bgm-custom');
+    if (customAud) {
+      customAud.src = storedMusicUrl;
+    }
     const selectEl = document.getElementById('bgm-select');
     if (selectEl) {
       const opt = document.createElement('option');
-      opt.value = storedMusicUrl;
+      opt.value = 'bgm-custom';
       opt.innerText = "🎵 自定义专属伴奏";
       selectEl.appendChild(opt);
-      selectEl.value = storedMusicUrl;
+      selectEl.value = 'bgm-custom';
+      currentBGMId = 'bgm-custom';
     }
   });
 }
@@ -624,19 +633,29 @@ function speakSentence(text) {
 // 伴奏播放与暂停控制
 function togglePlay() {
   const btn = document.getElementById('play-btn');
-  if (bgMusic.paused) {
-    // 自动解锁 iOS 伴奏音频通道
-    bgMusic.volume = 0.25; // 默认较小的伴奏背景音量
-    bgMusic.play().then(() => {
+  const activeAud = document.getElementById(currentBGMId);
+  
+  if (!activeAud) return;
+  
+  if (activeAud.paused) {
+    // 播放前，确保其他所有轨道都是暂停状态
+    document.querySelectorAll('audio').forEach(aud => {
+      if (aud.id !== currentBGMId) {
+        aud.pause();
+      }
+    });
+    
+    activeAud.volume = 0.25;
+    activeAud.play().then(() => {
       btn.innerText = '⏸';
       btn.style.background = 'var(--primary-green)';
       btn.style.color = '#ffffff';
     }).catch(e => {
       console.warn("Audio play failed:", e);
-      alert("播放失败！请确保您的 iPad 音量已打开，或重新点击播放。");
+      alert("播放失败！请在屏幕上任意处点按一次解锁声音，并确保您的 iPad 音量已打开。");
     });
   } else {
-    bgMusic.pause();
+    activeAud.pause();
     btn.innerText = '▶';
     btn.style.background = 'transparent';
     btn.style.color = 'var(--primary-green)';
