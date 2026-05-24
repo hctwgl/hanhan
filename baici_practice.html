@@ -1417,30 +1417,61 @@ function filterUnit(val) {
   }
 }
 
-// 拼音发音 (Web Speech API)
+// 拼音发音 (Web Speech API - 优化 iOS 兼容版)
 function speakWord(char, pinyin, element) {
   if ('speechSynthesis' in window) {
-    // 朗读时带动画效果
     element.classList.add('speaking');
     
     const utter = new SpeechSynthesisUtterance(char);
     utter.lang = 'zh-CN';
-    utter.rate = 0.75; // 慢速以听得更清晰
+    
+    // 针对 iOS/Safari 优化的语速与音量
+    utter.rate = 0.75; 
+    utter.volume = 1.0;
     
     utter.onend = () => {
       element.classList.remove('speaking');
     };
-    utter.onerror = () => {
+    utter.onerror = (err) => {
+      console.error("Speech error:", err);
       element.classList.remove('speaking');
     };
     
-    // 播放
-    window.speechSynthesis.cancel(); // 停止当前正在播放的声音，防止排队滞后
+    // WebKit 兼容防御机制：在 iOS 上，频繁 cancel() 有概率挂死语音引擎进程
+    // 我们用 try-catch 保护，并立即合成播放
+    try {
+      if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+      }
+    } catch (e) {
+      console.warn("Cancel speech error:", e);
+    }
+    
     window.speechSynthesis.speak(utter);
   } else {
     alert("您的浏览器不支持语音播放。请使用 Chrome, Safari 或 Edge 浏览器。");
   }
 }
+
+// ⭐ iOS Web Speech API 激活锁自动解锁逻辑 ⭐
+// iOS 浏览器（Safari/Chrome）有极严苛的隐私安全限制：非用户直接交互过的网页会被自动静音
+// 我们绑定一次性点击/触摸监听，在用户首次点击屏幕任意位置时自动播送一个“空白静音字”激活音频通道
+function unlockIOSSpeech() {
+  if ('speechSynthesis' in window) {
+    try {
+      const unlockUtter = new SpeechSynthesisUtterance(' ');
+      unlockUtter.volume = 0; // 0音量静音播放
+      window.speechSynthesis.speak(unlockUtter);
+    } catch (e) {
+      console.warn("Unlock speech audio error:", e);
+    }
+    // 解锁成功后立即移除监听，防止不必要的重复触发
+    document.body.removeEventListener('click', unlockIOSSpeech);
+    document.body.removeEventListener('touchstart', unlockIOSSpeech);
+  }
+}
+document.body.addEventListener('click', unlockIOSSpeech);
+document.body.addEventListener('touchstart', unlockIOSSpeech);
 
 // 第二关：下拉框选择改变状态
 function checkSelect(sel) {
