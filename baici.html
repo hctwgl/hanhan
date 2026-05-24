@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>一年级下册生字测验卷 (四至七单元)</title>
+<style>
+  /* 确保打印时保留红绿线条颜色 */
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+  body { font-family: sans-serif; padding: 20px; color: #333; }
+  .page { max-width: 800px; margin: 0 auto; text-align: left; }
+  h1 { text-align: center; margin-bottom: 5px; }
+  .header-info { text-align: center; margin-bottom: 30px; font-size: 16px; }
+  h2 { border-bottom: 2px solid #333; padding-bottom: 5px; margin-top: 35px; font-size: 18px; }
+  
+  /* 整体网格布局 */
+  .grid-box { display: flex; flex-wrap: wrap; gap: 15px 12px; margin-top: 15px; }
+  .char-wrap { width: 50px; display: flex; flex-direction: column; align-items: center; }
+
+  /* 拼音四线三格绘制 (标准绿色) */
+  .sixian { 
+    width: 100%; height: 24px; position: relative; 
+    border-top: 1px solid #4caf50; border-bottom: 1px solid #4caf50; 
+    display: flex; align-items: center; justify-content: center; 
+  }
+  .sixian::before { 
+    content: ''; position: absolute; left: 0; top: 33%; 
+    width: 100%; border-top: 1px dashed #4caf50; 
+  }
+  .sixian::after { 
+    content: ''; position: absolute; left: 0; top: 66%; 
+    width: 100%; border-top: 1px dashed #4caf50; 
+  }
+  .sixian span { 
+    position: relative; z-index: 1; font-size: 13px; 
+    font-family: Arial, sans-serif; line-height: 24px; color: #000;
+  }
+
+  /* 汉字田字格绘制 (标准红色) */
+  .tianzige { 
+    width: 50px; height: 50px; border: 2px solid #e53935; 
+    position: relative; margin-top: 3px; box-sizing: border-box; 
+  }
+  .tianzige::before { 
+    content: ''; position: absolute; top: 50%; left: 0; 
+    width: 100%; border-top: 1px dashed #e53935; 
+  }
+  .tianzige::after { 
+    content: ''; position: absolute; top: 0; left: 50%; 
+    height: 100%; border-left: 1px dashed #e53935; 
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>一年级下册生字测验冲刺卷</h1>
+  <div class="header-info">班级：______________ 姓名：______________ 得分：______________</div>
+  
+  <div id="app"></div>
+</div>
+
+<script>
+// 您提供的全部字库数据及拼音
+const data = [
+  {
+    unit: "第四单元 (含语文园地)",
+    words: [
+      ["sī","思"], ["chuáng","床"], ["qián","前"], ["guāng","光"], ["dī","低"], ["gù","故"], ["xiāng","乡"], ["sè","色"], ["wài","外"], ["kàn","看"], ["wǎn","晚"], ["xiào","笑"], ["zài","再"], ["wǔ","午"], ["jié","节"], ["yè","叶"], ["mǐ","米"], ["fēn","分"], ["dòu","豆"], ["bà","爸"], ["zhēn","真"], ["nà","那"], ["zhe","着"], ["dào","到"], ["gāo","高"], ["xìng","兴"], ["cè","册"], ["zhī","支"], ["tái","台"], ["diàn","电"], ["shì","视"], ["bù","部"], ["jī","机"], ["yī","衣"], ["kù","裤"], ["bèi","被"]
+    ]
+  },
+  {
+    unit: "第五单元",
+    words: [
+      ["shuí‌","谁"], ["pà","怕"], ["gēn","跟"], ["liáng","凉"], ["liàng","量"], ["zuì","最"], ["yuán","园"], ["yīn","因"], ["wèi","为"], ["liǎn","脸"], ["yáng","阳"], ["kě","可"], ["shí","石"], ["bàn","办"], ["fǎ","法"], ["zhǎo","找"], ["bié","别"], ["xiàng","象"], ["xiàng","像"], ["wù","物"], ["yùn","运"], ["fáng","房"], ["zào","造"], ["huān","欢"], ["wǎng","网"], ["duì","对"], ["xuě","雪"], ["xī","夕"], ["jīn","今"], ["xì","细"], ["yǔ","语"], ["dǎ","打"], ["pǎo","跑"], ["shā","沙"], ["pí","皮"], ["zú","足"], ["bāo","包"], ["jìn","近"], ["yuǎn","远"], ["yù","玉"], ["xí","习"], ["xué","学"], ["yì","义"], ["bǎo","饱"], ["bào","抱"], ["qīng","青"], ["qīng","清"], ["zài","再"], ["zài","在"]
+    ]
+  },
+  {
+    unit: "第六单元",
+    words: [
+      ["guā","瓜"], ["yuán","园"], ["bié","别"], ["dōu","都"], ["xià","吓"], ["jiào","叫"], ["zhì","治"], ["qí","奇"], ["niáng","娘"], ["yàn","燕"], ["xīng","星"], ["hé","河"], ["qíng","晴"], ["yǎn","眼"], ["jīng","睛"], ["bǎo","保"], ["hù","护"], ["miáo","苗"], ["chī","吃"], ["shì","事"], ["qíng","情"], ["qǐng","请"], ["ràng","让"], ["shǒu","首"], ["cǎi","采"], ["jiǎo","角"], ["chí","池"], ["jiān","尖"], ["zǎo","早"], ["yǎn","眼"], ["tā","它"], ["qì","气"], ["lèi","泪"], ["bèi","贝"], ["wá","娃"], ["jī","机"], ["chàng","唱"], ["duǒ","朵"], ["tái","台"], ["sǎn","伞"], ["měi","美"], ["guó","国"], ["bǎi","百"], ["shí","时"], ["lín","林"], ["dōu","都"], ["tīng","听"], ["diǎn","点"], ["gāo","高"], ["zhe","着"], ["guā","瓜"], ["jìn","进"], ["xìng","兴"], ["wǎng","往"], ["tù","兔"]
+    ]
+  },
+  {
+    unit: "第七单元",
+    words: [
+      ["bǐ","笔"], ["dào","道"], ["zhī","知"], ["fàng","放"], ["ān","安"], ["píng","平"], ["xīn","新"], ["xiē","些"], ["bàn","办"], ["bāo","包"], ["cì","次"], ["zhōng","钟"], ["xǐ","洗"], ["yǐ","已"], ["jīng","经"], ["yào","要"], ["bǎi","百"], ["shé","舌"], ["lián","连"], ["hái","还"], ["diǎn","点"], ["kuài","块"], ["cháng","常"], ["kōng","空"], ["fēi","非"], ["wǎng","往"], ["jìn","进"], ["gāo","高"], ["zhe","着"], ["xìng","兴"], ["fáng","房"], ["lǎo","老"], ["jīn","巾"], ["xǐ","洗"], ["fáng","房"], ["lǎo","老"], ["zhe","着"], ["bāo","包"]
+    ]
+  }
+];
+
+const app = document.getElementById('app');
+data.forEach(sec => {
+  // 渲染每个单元的标题
+  app.innerHTML += `<h2>${sec.unit}</h2>`;
+  
+  let gridHtml = '<div class="grid-box">';
+  // 遍历并渲染四线格拼音和空白田字格
+  sec.words.forEach(w => {
+    gridHtml += `
+      <div class="char-wrap">
+        <div class="sixian"><span>${w[0]}</span></div>
+        <div class="tianzige"></div>
+      </div>
+    `;
+  });
+  gridHtml += '</div>';
+  app.innerHTML += gridHtml;
+});
+</script>
+</body>
+</html>
