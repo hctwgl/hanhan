@@ -214,15 +214,15 @@
   }
   .grid-box {
     display: grid;
-    /* 每一个词语占宽大约 130px，一行排 4 - 6 个词 */
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-    gap: 20px 16px;
+    /* 每一个词语占宽大约 140px，一行排 4 - 6 个词，彻底防折行 */
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 25px 20px;
   }
   @media print {
     /* 打印时强行以 4 列规整排版，和照片里的百词卷排版 100% 契合 */
     .grid-box {
       grid-template-columns: repeat(4, 1fr) !important;
-      gap: 24px 18px !important;
+      gap: 30px 20px !important;
     }
   }
   
@@ -235,37 +235,42 @@
     position: relative;
   }
   
-  /* 词语拼音印刷字体 */
+  /* 词语拼音印刷字体 (极简优雅印刷体，防折行) */
   .word-pinyin {
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 700;
     font-family: "PingFang SC", "Comic Sans MS", "Arial", sans-serif;
-    color: #1a202c;
-    margin-bottom: 8px;
-    letter-spacing: 2px;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
     cursor: pointer;
-    padding: 3px 8px;
-    border-radius: 6px;
+    padding: 4px 12px;
+    border-radius: 20px;
     transition: all 0.2s ease;
     text-align: center;
-    background: rgba(248, 250, 252, 0.8);
-    border: 1px solid var(--border-color);
-    box-shadow: var(--shadow-sm);
+    background: transparent;
+    border: 1px solid transparent;
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
+    white-space: nowrap; /* 绝对不换行 */
   }
   .word-pinyin:hover {
-    background: rgba(46, 125, 50, 0.08);
-    border-color: var(--green-line);
-    transform: translateY(-1px);
+    background: rgba(46, 125, 50, 0.06);
+    border-color: rgba(46, 125, 50, 0.15);
+    color: var(--primary-color);
+    transform: scale(1.03);
   }
   
-  /* 拼音旁边的发音小喇叭 */
+  /* 拼音旁边的发音小喇叭 (低干扰精致半透明) */
   .word-pinyin::after {
     content: '🔊';
     font-size: 10px;
-    opacity: 0.4;
+    opacity: 0.35;
+    transition: opacity 0.2s ease;
+  }
+  .word-pinyin:hover::after {
+    opacity: 0.8;
   }
 
   /* 双联田字格容器 */
@@ -775,15 +780,15 @@
     </p>
     
     <div class="input-label">📝 输入生词库文本</div>
-    <textarea class="drawer-textarea" id="custom-input" placeholder='支持多种宽容格式输入：
-1. 普通文本：
-   sī xiāng 思乡, chuáng qián 床前
+    <textarea class="drawer-textarea" id="custom-input" placeholder='极度宽容！支持任何混合格式粘贴，例如：
+1. 拼音汉字混排（用空格或标点）：
+   sī xiāng 思乡 chuáng qián 床前 dī tóu 低头
    
-2. 课文/空格格式：
-   sī xiāng(思乡) chuáng qián(床前)
+2. 括号说明格式：
+   思乡(sī xiāng) 床前(chuáng qián)
    
-3. 二维数组格式：
-   [["sī xiāng","思乡"], ["chuáng qián","床前"]]'></textarea>
+3. 微信通知或带序号的文本（直接粘贴）：
+   本单元词语听写：1. 思乡 (sī xiāng) 2. 床前 (chuáng qián)'></textarea>
     
     <div style="display: flex; gap: 10px; margin-top: 15px;">
       <button class="btn btn-accent" style="flex: 1; justify-content: center;" onclick="parseAndGenerate()">✨ 立即解析生成</button>
@@ -1718,6 +1723,7 @@ function parseAndGenerate() {
   
   let parsedWords = [];
   
+  // 1. 尝试 JSON 兜底解析
   try {
     const jsonParsed = JSON.parse(inputVal);
     if (Array.isArray(jsonParsed)) {
@@ -1729,35 +1735,75 @@ function parseAndGenerate() {
     }
   } catch (e) {}
   
+  // 2. 超强两阶段智能分词提取算法
   if (parsedWords.length === 0) {
-    // 匹配如: sī xiāng 思乡  或  sī xiāng(思乡)
-    const pinyinRegex = /([a-zA-Zāáǎàōóǒòēéěèīíǐìūúǔùüǘǚǜ‌\s]+)/;
-    const charRegex = /([\u4e00-\u9fa5]+)/;
+    const charRegex = /[\u4e00-\u9fa5]+/g;
+    const pinyinRegex = /[a-zA-Zāáǎàōóǒòēéěèīíǐìūúǔùüǘǚǜüāáǎàōóǒòēéěèīíǐìūúǔùüǘǚǜńňǹ\s]+/g;
     
-    const tokens = inputVal.split(/[,，;；\n\r"']+/);
-    tokens.forEach(token => {
-      const trimmedToken = token.trim();
-      if (!trimmedToken) return;
-      
-      // 分别提取汉字与拼音
-      const hzMatch = trimmedToken.match(charRegex);
-      if (hzMatch) {
-        const hz = hzMatch[1];
-        // 拼音则是去掉汉字和括号之后的部分
-        let py = trimmedToken.replace(charRegex, '').replace(/[\(\)（）]/g, '').trim();
-        if (py && hz) {
-          parsedWords.push([py, hz]);
+    let chars = [];
+    let pinyins = [];
+    let match;
+    
+    // 提取所有汉字块及其索引
+    while ((match = charRegex.exec(inputVal)) !== null) {
+      chars.push({
+        text: match[0].trim(),
+        index: match.index
+      });
+    }
+    
+    // 提取所有可能的拼音块及其索引
+    while ((match = pinyinRegex.exec(inputVal)) !== null) {
+      let pyText = match[0].replace(/\s+/g, ' ').trim();
+      // 必须包含英文字母或声调字母，且排除纯数字及单个无意义字符
+      if (pyText && /[a-zA-Zāáǎàōóǒòēéěèīíǐìūúǔùüǘǚǜüāáǎàōóǒòēéěèīíǐìūúǔùüǘǚǜńňǹ]/.test(pyText)) {
+        pinyins.push({
+          text: pyText,
+          index: match.index
+        });
+      }
+    }
+    
+    let pairedPinyins = new Set();
+    let pairedChars = new Set();
+    
+    // 第一阶段：邻近位置匹配 (针对“拼音汉字交替混排”、“括号混排”、“逗号混排”等)
+    chars.forEach(c => {
+      let bestPinyin = null;
+      let minDist = 999999;
+      pinyins.forEach(p => {
+        if (pairedPinyins.has(p)) return;
+        let dist = Math.abs(c.index - p.index);
+        // 如果拼音和汉字的起止位置在 30 个字符以内，通常判定为同一组词语
+        if (dist < minDist && dist < 30) {
+          minDist = dist;
+          bestPinyin = p;
         }
+      });
+      if (bestPinyin) {
+        parsedWords.push([bestPinyin.text, c.text]);
+        pairedPinyins.add(bestPinyin);
+        pairedChars.add(c);
       }
     });
+    
+    // 第二阶段：顺序对齐配对 (针对“前半截纯拼音列表，后半截纯汉字列表”等极特殊排版)
+    let remainingChars = chars.filter(c => !pairedChars.has(c));
+    let remainingPinyins = pinyins.filter(p => !pairedPinyins.has(p));
+    
+    let limit = Math.min(remainingChars.length, remainingPinyins.length);
+    for (let i = 0; i < limit; i++) {
+      parsedWords.push([remainingPinyins[i].text, remainingChars[i].text]);
+    }
   }
   
+  // 3. 校验并展示反馈结果
   if (parsedWords.length === 0) {
     msgEl.style.display = 'block';
     msgEl.style.backgroundColor = '#fadbd8';
     msgEl.style.color = '#78281f';
     msgEl.style.border = '1px solid #f5b041';
-    msgEl.innerText = "❌ 智能解析失败！请检查格式。例：'sī xiāng 思乡' 格式。";
+    msgEl.innerText = "❌ 智能解析失败！请确保粘贴的文本中【同时包含拼音与汉字】。例如直接复制微信通知里的：'sī xiāng 思乡 chuáng qián 床前' 即可。";
     return;
   }
   
@@ -1781,7 +1827,7 @@ function parseAndGenerate() {
   msgEl.style.backgroundColor = '#d4efdf';
   msgEl.style.color = '#196f3d';
   msgEl.style.border = '1px solid #2ecc71';
-  msgEl.innerText = `🎉 成功提取出 ${parsedWords.length} 个拼音词组！已为您瞬间渲染全新的连体字帖，可以打印或在屏幕上播放声音练习了。`;
+  msgEl.innerText = `🎉 超强智能解析成功！共提取出 ${parsedWords.length} 个词组，已为您瞬间重绘生成连体字帖！`;
   
   setTimeout(() => toggleDrawer(), 800);
 }
