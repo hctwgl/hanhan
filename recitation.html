@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>《彩色的中国》王悦菡 - 一年级九班朗诵练习卷</title>
+<!-- 智能拼音转换引擎 (国内极速 CDN 加速，支持多音字智能注音) -->
+<script src="https://cdn.jsdelivr.net/npm/pinyin-pro@3.18.2/dist/index.js"></script>
+<style>
+  /* 莫兰迪自然彩色美学体系 */
+  :root {
+    --bg-color: #f5f7f6;
+    --card-bg: #ffffff;
+    --text-dark: #2c3e50;
+    --text-muted: #7f8c8d;
+    --primary-green: #2e7d32;
+    --accent-purple: #8e44ad;
+    --border-color: #e5e7eb;
+    
+    /* 莫兰迪自然特色彩色 */
+    --color-grass: #a3e4d7; /* 碧绿草原 */
+    --color-desert: #fdebd0; /* 金黄沙漠 */
+    --color-ocean: #d4e6f1; /* 蔚蓝大海 */
+    --color-snow: #eaeded; /* 银白雪山 */
+    
+    --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.01), 0 2px 4px -1px rgba(0,0,0,0.01);
+    --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.02), 0 4px 6px -2px rgba(0,0,0,0.01);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.03), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+  }
+  
+  body {
+    background: var(--bg-color);
+    color: var(--text-dark);
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .container {
+    width: 100%;
+    max-width: 800px;
+    padding: 30px 20px;
+    box-sizing: border-box;
+  }
+  
+  /* 苹果控制中心风格顶栏 */
+  .control-bar {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 20px;
+    padding: 12px 24px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    position: sticky;
+    top: 15px;
+    z-index: 100;
+    transition: all 0.3s ease;
+  }
+  
+  .control-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  
+  /* 苹果滑块 Tab 样式 */
+  .toggle-container {
+    background: #f3f4f6;
+    padding: 3px;
+    border-radius: 20px;
+    display: inline-flex;
+    border: 1px solid #e5e7eb;
+  }
+  .toggle-tab {
+    padding: 6px 16px;
+    border-radius: 18px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #4b5563;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    user-select: none;
+  }
+  .toggle-tab.active {
+    background: #ffffff;
+    color: var(--primary-green);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+  
+  /* 精致胶囊按钮 */
+  .btn {
+    background: #ffffff;
+    color: #374151;
+    border: 1px solid #e5e7eb;
+    padding: 8px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+  }
+  .btn:hover {
+    border-color: var(--primary-green);
+    color: var(--primary-green);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(46, 125, 50, 0.06);
+  }
+  
+  .btn-primary {
+    background: linear-gradient(135deg, #2e7d32, #1b5e20);
+    color: #ffffff;
+    border: none;
+    box-shadow: 0 4px 12px rgba(46, 125, 50, 0.15);
+  }
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #388e3c, #1b5e20);
+    color: #ffffff;
+    box-shadow: 0 6px 16px rgba(46, 125, 50, 0.25);
+  }
+  
+  /* 朗诵稿主卡片 */
+  .recitation-card {
+    background: var(--card-bg);
+    border-radius: 28px;
+    padding: 45px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.03);
+    border: 1px solid var(--border-color);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  /* 头部配图与装饰 */
+  .header-decor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 25px;
+  }
+  .decor-img {
+    width: 240px;
+    height: 240px;
+    object-fit: contain;
+    border-radius: 20px;
+    margin-bottom: 18px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+    transition: transform 0.3s ease;
+  }
+  .decor-img:hover {
+    transform: scale(1.02);
+  }
+  
+  .title-area h1 {
+    font-size: 30px;
+    color: var(--text-dark);
+    margin: 0 0 10px 0;
+    font-weight: 800;
+    letter-spacing: 3px;
+    background: linear-gradient(to right, #1b5e20, var(--accent-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .subtitle {
+    font-size: 15px;
+    color: var(--text-muted);
+    font-weight: 700;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+  }
+  
+  /* 分割彩带线 */
+  .ribbon {
+    height: 4px;
+    width: 100%;
+    background: linear-gradient(to right, 
+      var(--primary-green) 0%, 
+      #48c9b0 25%, 
+      #f4d03f 50%, 
+      #3498db 75%, 
+      var(--accent-purple) 100%
+    );
+    border-radius: 2px;
+    margin-bottom: 35px;
+  }
+  
+  /* 朗诵句型展示区 */
+  .speech-content {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    align-items: center;
+    width: 100%;
+  }
+  
+  /* 诗歌每行样式 */
+  .speech-line {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    column-gap: 5px;
+    row-gap: 12px;
+    padding: 10px 20px;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .speech-line:hover {
+    background: rgba(46, 125, 50, 0.04);
+    transform: translateY(-1px) scale(1.005);
+  }
+  
+  /* 拼音汉字单字框 */
+  .char-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 34px;
+    height: 66px;
+    justify-content: flex-end;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+  
+  .py-text {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary-green);
+    font-family: "PingFang SC", "Comic Sans MS", "Arial", sans-serif;
+    height: 22px;
+    line-height: 22px;
+    transition: all 0.3s ease;
+    user-select: none;
+    letter-spacing: 0.5px;
+  }
+  
+  .hz-text {
+    font-size: 26px;
+    font-weight: bold;
+    font-family: "KaiTi", "STKaiti", "DFKai-SB", "华文楷体", serif;
+    color: var(--text-dark);
+    height: 38px;
+    line-height: 38px;
+    transition: color 0.2s ease;
+  }
+  .speech-line:hover .hz-text {
+    color: #1b5e20;
+  }
+  
+  /* 标点符号独立框 */
+  .symbol-box {
+    display: flex;
+    align-items: flex-end;
+    height: 66px;
+    font-size: 26px;
+    font-weight: bold;
+    font-family: "KaiTi", "STKaiti", "DFKai-SB", "华文楷体", serif;
+    color: var(--text-muted);
+    padding-bottom: 2px;
+    box-sizing: border-box;
+  }
+  
+  /* 隐藏拼音状态 */
+  .hide-pinyin .py-text {
+    opacity: 0;
+    height: 0;
+    transform: translateY(5px);
+    pointer-events: none;
+  }
+  .hide-pinyin .char-box {
+    height: 40px;
+  }
+  .hide-pinyin .symbol-box {
+    height: 40px;
+  }
+  
+  /* 贴心的家长勘误说明区 */
+  .correction-box {
+    margin-top: 45px;
+    padding: 20px 24px;
+    background: rgba(243, 244, 246, 0.65);
+    border-radius: 18px;
+    border: 1px dashed var(--border-color);
+    font-size: 13px;
+    color: #4b5563;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .correction-box h4 {
+    margin: 0;
+    color: var(--primary-green);
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .correction-box ul {
+    margin: 0;
+    padding-left: 18px;
+  }
+  .correction-box li {
+    margin-bottom: 4px;
+  }
+  .correction-box li strong {
+    color: var(--accent-purple);
+  }
+  
+  /* 伴奏播放器气泡 */
+  .music-widget {
+    background: rgba(253, 254, 254, 0.9);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: var(--shadow-sm);
+  }
+  .music-info {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-dark);
+  }
+  
+  /* iOS 伴奏播放按钮 */
+  .play-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--primary-green);
+    background: transparent;
+    color: var(--primary-green);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s ease;
+    outline: none;
+  }
+  .play-btn:hover {
+    background: var(--primary-green);
+    color: #ffffff;
+  }
+  
+  /* 音乐链接自定义面板 */
+  .music-setting-drawer {
+    margin-top: 15px;
+    font-size: 11px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .music-input {
+    border: 1px solid var(--border-color);
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    outline: none;
+    width: 250px;
+  }
+  
+  /* 窄屏自适应 */
+  @media (max-width: 768px) {
+    .control-bar {
+      display: grid;
+      grid-template-columns: 1fr;
+      padding: 12px 18px;
+      gap: 10px;
+      border-radius: 18px;
+    }
+    .control-bar > * {
+      width: 100%;
+      justify-content: center;
+    }
+    .recitation-card {
+      padding: 25px 15px;
+      border-radius: 20px;
+    }
+    .hz-text {
+      font-size: 22px;
+      height: 32px;
+      line-height: 32px;
+    }
+    .py-text {
+      font-size: 12px;
+      height: 18px;
+      line-height: 18px;
+    }
+    .char-box {
+      min-width: 26px;
+      height: 52px;
+    }
+    .symbol-box {
+      font-size: 22px;
+      height: 52px;
+    }
+    .hide-pinyin .char-box, .hide-pinyin .symbol-box {
+      height: 34px;
+    }
+    .decor-img {
+      width: 180px;
+      height: 180px;
+    }
+    .music-input {
+      width: 100%;
+    }
+  }
+  
+  /* 针对 A4 打印深度优化 */
+  @media print {
+    body {
+      background: #ffffff !important;
+      color: #000000 !important;
+    }
+    .no-print {
+      display: none !important;
+    }
+    .container {
+      padding: 0 !important;
+      max-width: 100% !important;
+    }
+    .recitation-card {
+      box-shadow: none !important;
+      border: none !important;
+      padding: 10px 0 !important;
+      background: transparent !important;
+    }
+    .decor-img {
+      width: 180px !important;
+      height: 180px !important;
+      margin-bottom: 12px !important;
+    }
+    .hz-text {
+      color: #000000 !important;
+      font-family: "KaiTi", "STKaiti", "DFKai-SB", "华文楷体", serif !important;
+    }
+    .py-text {
+      color: #1b5e20 !important;
+    }
+    .speech-line {
+      padding: 4px 10px !important;
+      margin-bottom: 6px !important;
+      page-break-inside: avoid !important;
+    }
+    .correction-box {
+      display: none !important; /* 打印时隐藏家长的勘误参考 */
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  
+  <!-- 顶栏控制中心 (非打印) -->
+  <div class="control-bar no-print">
+    <div class="control-group">
+      <!-- 拼音显隐滑块 -->
+      <div class="toggle-container">
+        <div class="toggle-tab active" id="tab-py-show" onclick="setPinyinMode('show')">💬 显示拼音</div>
+        <div class="toggle-tab" id="tab-py-hide" onclick="setPinyinMode('hide')">🔤 纯汉字模式</div>
+      </div>
+      
+      <!-- 伴奏播放控件 -->
+      <div class="music-widget">
+        <button class="play-btn" id="play-btn" onclick="togglePlay()">▶</button>
+        <span class="music-info" id="music-title">🎵 伴奏：李斯特《爱之梦》</span>
+      </div>
+    </div>
+    
+    <div class="control-group">
+      <!-- 一键打印 -->
+      <button class="btn btn-primary" onclick="window.print()">
+        🖨️ 一键打印 A4 朗诵稿
+      </button>
+    </div>
+  </div>
+
+  <!-- 朗诵练习稿主卡片 -->
+  <div class="recitation-card" id="recitation-card">
+    
+    <!-- 头部精美配图 -->
+    <div class="header-decor">
+      <!-- 嵌入高拟真“彩色的中国”水彩画，打印模式自动保留 -->
+      <img src="colorful_china.png" alt="彩色的中国" class="decor-img">
+      
+      <div class="title-area">
+        <h1>彩色的中国</h1>
+        <div class="subtitle">王悦菡 —— 一年级九班 朗诵练习</div>
+      </div>
+    </div>
+    
+    <!-- 分割彩带线 -->
+    <div class="ribbon"></div>
+    
+    <!-- 诗意朗诵句型区 (JS 动态解析注音并在这里渲染) -->
+    <div class="speech-content" id="speech-content"></div>
+    
+    <!-- 家长勘误参考区 (非打印) -->
+    <div class="correction-box no-print">
+      <h4>💡 贴心助手：错别字智能修正说明</h4>
+      <p style="margin: 0 0 6px 0;">我们发现学校发过来的朗诵原稿中含有几处打字错别字。为了给悦菡最正规、最科学的语文启蒙，系统在生成本练习页时已**自动将其修正**：</p>
+      <ul>
+        <li>原稿“一年级九班**的的**王悦菡” ➜ 已修正为 <strong>“一年级九班的王悦菡”</strong>（去掉多余的“的”）。</li>
+        <li>原稿“**餐**天大树” ➜ 已修正为 <strong>“参天大树”</strong>（修正错别字“餐”）。</li>
+        <li>原稿“**动**梁” ➜ 已修正为 <strong>“栋梁”</strong>（修正同音错别字“动”）。</li>
+      </ul>
+      <p style="margin: 4px 0 0 0; font-size:12px; color:var(--primary-green);">* 屏幕模式：直接点击朗诵词中任意一句话，iPad 将会以清晰慢速的普通话女声进行标准朗诵示范，方便孩子跟读校音。</p>
+    </div>
+
+    <!-- 伴奏自定义微调 (非打印) -->
+    <div class="music-setting-drawer no-print">
+      <span>更换伴奏链接 (MP3)：</span>
+      <input type="text" class="music-input" id="custom-music-url" placeholder="粘贴新的网络MP3伴奏地址，按回车生效" onchange="changeMusicUrl(this.value)">
+    </div>
+    
+  </div>
+
+</div>
+
+<!-- 伴奏音频元素 -->
+<audio id="bg-music" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" loop></audio>
+
+<script>
+// 朗诵词数据结构 (已贴心订正错别字并作出了排版美化)
+const lines = [
+  "大家好。我是一年级九班的王悦菡。",
+  "我朗诵的作品是彩色的中国。",
+  "轻轻打开地图。我第一眼就看到了彩色的中国。",
+  "碧绿的是草原，金黄的是沙漠，蔚蓝的是大海，银白的是雪山。",
+  "今天我们是祖国的幼苗。",
+  "明天我们一定会长成参天大树，成为祖国的栋梁。",
+  "看祖国的版图上一片五颜六色，就像盛开的鲜艳花朵。",
+  "面对这美丽的图画，让我们放声歌唱。",
+  "我爱您，中国！"
+];
+
+// 初始化伴奏地址
+const bgMusic = document.getElementById('bg-music');
+const customUrlInput = document.getElementById('custom-music-url');
+const storedMusicUrl = localStorage.getItem('recitation_bg_music_url');
+if (storedMusicUrl) {
+  bgMusic.src = storedMusicUrl;
+  customUrlInput.value = storedMusicUrl;
+}
+
+// 动态拼音解析渲染逻辑
+window.onload = () => {
+  const contentEl = document.getElementById('speech-content');
+  
+  lines.forEach(line => {
+    const lineEl = document.createElement('div');
+    lineEl.className = 'speech-line';
+    lineEl.title = "点击播放本句标准跟读发音";
+    lineEl.onclick = () => speakSentence(line);
+    
+    // 调用 pinyin-pro 动态提取整句汉字的连贯上下文拼音数组
+    let pinyins = [];
+    if (typeof pinyinPro !== 'undefined' && typeof pinyinPro.pinyin === 'function') {
+      pinyins = pinyinPro.pinyin(line, { type: 'array', toneSandhi: true });
+    }
+    
+    // 逐字扫描字符串，生成完美的汉字-拼音配对框
+    for (let i = 0; i < line.length; i++) {
+      const char = line[i];
+      if (/[\u4e00-\u9fa5]/.test(char)) {
+        const charBox = document.createElement('div');
+        charBox.className = 'char-box';
+        
+        const pyEl = document.createElement('span');
+        pyEl.className = 'py-text';
+        // 依次从拼音数组里弹出一个，完美配对
+        pyEl.innerText = pinyins.shift() || '';
+        
+        const hzEl = document.createElement('span');
+        hzEl.className = 'hz-text';
+        hzEl.innerText = char;
+        
+        charBox.appendChild(pyEl);
+        charBox.appendChild(hzEl);
+        lineEl.appendChild(charBox);
+      } else {
+        // 标点符号或空格原样输出
+        const symBox = document.createElement('div');
+        symBox.className = 'symbol-box';
+        symBox.innerText = char;
+        lineEl.appendChild(symBox);
+      }
+    }
+    contentEl.appendChild(lineEl);
+  });
+};
+
+// 拼音显示隐藏切换
+function setPinyinMode(mode) {
+  const card = document.getElementById('recitation-card');
+  const tabShow = document.getElementById('tab-py-show');
+  const tabHide = document.getElementById('tab-py-hide');
+  if (mode === 'show') {
+    card.classList.remove('hide-pinyin');
+    tabShow.classList.add('active');
+    tabHide.classList.remove('active');
+  } else {
+    card.classList.add('hide-pinyin');
+    tabShow.classList.remove('active');
+    tabHide.classList.add('active');
+  }
+}
+
+// iOS Web Speech API 朗诵示范
+function speakSentence(text) {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    
+    // 去掉标点，纯汉字发音会更连贯自然
+    const cleanText = text.replace(/[^\u4e00-\u9fa5]/g, '');
+    const utter = new SpeechSynthesisUtterance(cleanText);
+    utter.lang = 'zh-CN';
+    utter.rate = 0.78; // 微微缓慢的朗诵速度，极利于一年级悦菡纠音跟读
+    utter.pitch = 1.1; // 稍微亮丽的声调，展现孩子蓬勃的朝气
+    
+    // 音量平衡保护，避免盖住或卡死
+    window.speechSynthesis.speak(utter);
+  }
+}
+
+// 伴奏播放与暂停控制
+function togglePlay() {
+  const btn = document.getElementById('play-btn');
+  if (bgMusic.paused) {
+    // 自动解锁 iOS 伴奏音频通道
+    bgMusic.volume = 0.25; // 默认较小的伴奏背景音量
+    bgMusic.play().then(() => {
+      btn.innerText = '⏸';
+      btn.style.background = 'var(--primary-green)';
+      btn.style.color = '#ffffff';
+    }).catch(e => {
+      console.warn("Audio play failed:", e);
+      alert("播放失败！请确保您的 iPad 音量已打开，或重新点击播放。");
+    });
+  } else {
+    bgMusic.pause();
+    btn.innerText = '▶';
+    btn.style.background = 'transparent';
+    btn.style.color = 'var(--primary-green)';
+  }
+}
+
+// 自定义伴奏 MP3 更改
+function changeMusicUrl(url) {
+  if (url.trim()) {
+    bgMusic.src = url.trim();
+    localStorage.setItem('recitation_bg_music_url', url.trim());
+    bgMusic.load();
+    if (!bgMusic.paused) {
+      bgMusic.play();
+    }
+    document.getElementById('music-title').innerText = "🎵 伴奏：用户自定义伴奏";
+  }
+}
+
+// ⭐ iOS Web Speech & HTML5 Audio 一次性交互解锁 ⭐
+function unlockIOSRecitation() {
+  if ('speechSynthesis' in window) {
+    const unlockUtter = new SpeechSynthesisUtterance(' ');
+    unlockUtter.volume = 0;
+    window.speechSynthesis.speak(unlockUtter);
+  }
+  bgMusic.load();
+  document.body.removeEventListener('click', unlockIOSRecitation);
+  document.body.removeEventListener('touchstart', unlockIOSRecitation);
+}
+document.body.addEventListener('click', unlockIOSRecitation);
+document.body.addEventListener('touchstart', unlockIOSRecitation);
+</script>
+
+</body>
+</html>
