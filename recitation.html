@@ -4,34 +4,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>《彩色的中国》王悦菡 - 一年级九班朗诵练习卷</title>
-<!-- 智能拼音转换引擎 (国内极速 CDN 加速，支持多音字智能注音) -->
-<script src="https://cdn.jsdelivr.net/npm/pinyin-pro@3.18.2/dist/index.js"></script>
 <style>
-  /* 莫兰迪自然彩色美学体系 */
+  /* 莫兰迪自然彩色与温润书香美学体系 */
   :root {
-    --bg-color: #f5f7f6;
-    --card-bg: #ffffff;
-    --text-dark: #2c3e50;
-    --text-muted: #7f8c8d;
-    --primary-green: #2e7d32;
-    --accent-purple: #8e44ad;
-    --border-color: #e5e7eb;
+    --bg-color: #f2f5f4; /* 极淡雅的莫兰迪青瓷灰绿 */
+    --card-bg: #fcfdfd; /* 温润柔和的纸张白 */
+    --text-dark: #2c3e50; /* 儒雅深灰蓝 */
+    --text-muted: #7f8c8d; /* 柔和中灰 */
+    --primary-green: #2e7d32; /* 翡翠碧绿 */
+    --accent-purple: #8e44ad; /* 晚霞深紫 */
+    --border-color: rgba(46, 125, 50, 0.08); /* 极弱淡翠绿边框 */
     
-    /* 莫兰迪自然特色彩色 */
-    --color-grass: #a3e4d7; /* 碧绿草原 */
-    --color-desert: #fdebd0; /* 金黄沙漠 */
-    --color-ocean: #d4e6f1; /* 蔚蓝大海 */
-    --color-snow: #eaeded; /* 银白雪山 */
-    
-    --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.01), 0 2px 4px -1px rgba(0,0,0,0.01);
-    --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.02), 0 4px 6px -2px rgba(0,0,0,0.01);
-    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.03), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+    --shadow-soft: 0 15px 35px rgba(46, 125, 50, 0.04), 0 5px 15px rgba(0, 0, 0, 0.01);
   }
   
   body {
     background: var(--bg-color);
     color: var(--text-dark);
-    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
     margin: 0;
     padding: 0;
     min-height: 100vh;
@@ -42,154 +32,175 @@
   
   .container {
     width: 100%;
-    max-width: 800px;
-    padding: 30px 20px;
+    max-width: 760px;
+    padding: 20px 16px;
     box-sizing: border-box;
   }
   
-  /* 苹果控制中心风格顶栏 */
+  /* 胶囊式“悬浮控制台” (非打印) */
   .control-bar {
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.88);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    border-radius: 20px;
-    padding: 12px 24px;
-    margin-bottom: 25px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 24px;
+    padding: 8px 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 30px rgba(46, 125, 50, 0.03);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 15px;
+    gap: 16px;
     position: sticky;
     top: 15px;
     z-index: 100;
-    transition: all 0.3s ease;
+    box-sizing: border-box;
+    width: 100%;
   }
   
   .control-group {
     display: flex;
     align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
+    gap: 10px;
   }
   
-  /* 苹果滑块 Tab 样式 */
-  .toggle-container {
-    background: #f3f4f6;
-    padding: 3px;
-    border-radius: 20px;
-    display: inline-flex;
-    border: 1px solid #e5e7eb;
-  }
-  .toggle-tab {
-    padding: 6px 16px;
-    border-radius: 18px;
-    font-size: 13px;
-    font-weight: 700;
-    color: #4b5563;
-    cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  /* 播放胶囊整合 */
+  .music-widget {
+    background: rgba(46, 125, 50, 0.05);
+    border: 1px solid rgba(46, 125, 50, 0.08);
+    border-radius: 30px;
+    padding: 4px 12px;
     display: flex;
     align-items: center;
-    gap: 4px;
-    user-select: none;
-  }
-  .toggle-tab.active {
-    background: #ffffff;
-    color: var(--primary-green);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    gap: 8px;
+    height: 36px;
+    box-sizing: border-box;
   }
   
-  /* 精致胶囊按钮 */
-  .btn {
-    background: #ffffff;
-    color: #374151;
-    border: 1px solid #e5e7eb;
-    padding: 8px 18px;
-    border-radius: 20px;
+  /* 播放与暂停控制按钮 */
+  .play-btn {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: none;
+    background: var(--primary-green);
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 10px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+    box-shadow: 0 2px 6px rgba(46, 125, 50, 0.2);
+  }
+  .play-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 3px 8px rgba(46, 125, 50, 0.3);
+  }
+  .play-btn:active {
+    transform: scale(0.95);
+  }
+  
+  /* 下拉菜单定制 */
+  .bgm-select-el {
+    border: none;
+    background: transparent;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-dark);
+    cursor: pointer;
+    outline: none;
+    padding-right: 18px;
+    appearance: none;
+    background: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232c3e50' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right center;
+    background-size: 11px;
+    transition: color 0.2s ease;
+  }
+  .bgm-select-el:hover {
+    color: var(--primary-green);
+  }
+  
+  /* 一键打印高品级按钮 */
+  .btn-print {
+    background: linear-gradient(135deg, #2e7d32, #1b5e20);
+    color: #ffffff;
+    border: none;
+    padding: 0 16px;
+    height: 36px;
+    border-radius: 18px;
     cursor: pointer;
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 700;
     display: inline-flex;
     align-items: center;
     gap: 6px;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    box-shadow: 0 4px 10px rgba(46, 125, 50, 0.15);
+    box-sizing: border-box;
   }
-  .btn:hover {
-    border-color: var(--primary-green);
-    color: var(--primary-green);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 10px rgba(46, 125, 50, 0.06);
+  .btn-print:hover {
+    transform: translateY(-1px) scale(1.02);
+    box-shadow: 0 6px 14px rgba(46, 125, 50, 0.25);
   }
-  
-  .btn-primary {
-    background: linear-gradient(135deg, #2e7d32, #1b5e20);
-    color: #ffffff;
-    border: none;
-    box-shadow: 0 4px 12px rgba(46, 125, 50, 0.15);
-  }
-  .btn-primary:hover {
-    background: linear-gradient(135deg, #388e3c, #1b5e20);
-    color: #ffffff;
-    box-shadow: 0 6px 16px rgba(46, 125, 50, 0.25);
+  .btn-print:active {
+    transform: translateY(0) scale(0.98);
   }
   
-  /* 朗诵稿主卡片 */
+  /* 朗诵稿主卡片 (纸张感) */
   .recitation-card {
     background: var(--card-bg);
-    border-radius: 28px;
-    padding: 45px;
-    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.03);
+    border-radius: 24px;
+    padding: 35px 45px;
+    box-shadow: var(--shadow-soft);
     border: 1px solid var(--border-color);
     position: relative;
     overflow: hidden;
-    transition: all 0.3s ease;
+    box-sizing: border-box;
   }
   
-  /* 头部配图与装饰 */
+  /* 头部装饰与精微图片 */
   .header-decor {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
   }
   .decor-img {
-    width: 240px;
-    height: 240px;
+    width: 140px;
+    height: 140px;
     object-fit: contain;
     border-radius: 20px;
-    margin-bottom: 18px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
-    transition: transform 0.3s ease;
+    margin-bottom: 8px;
+    box-shadow: 0 6px 20px rgba(46, 125, 50, 0.05);
+    transition: all 0.3s ease;
   }
   .decor-img:hover {
-    transform: scale(1.02);
+    transform: scale(1.03) rotate(1deg);
   }
   
   .title-area h1 {
-    font-size: 30px;
+    font-size: 26px;
     color: var(--text-dark);
-    margin: 0 0 10px 0;
+    margin: 0 0 5px 0;
     font-weight: 800;
-    letter-spacing: 3px;
+    letter-spacing: 4px;
     background: linear-gradient(to right, #1b5e20, var(--accent-purple));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
   .subtitle {
-    font-size: 15px;
+    font-size: 14px;
     color: var(--text-muted);
     font-weight: 700;
-    margin-bottom: 15px;
-    letter-spacing: 1px;
+    margin-bottom: 8px;
+    letter-spacing: 1.5px;
   }
   
-  /* 分割彩带线 */
+  /* 七彩分割线 */
   .ribbon {
-    height: 4px;
+    height: 3px;
     width: 100%;
     background: linear-gradient(to right, 
       var(--primary-green) 0%, 
@@ -199,211 +210,143 @@
       var(--accent-purple) 100%
     );
     border-radius: 2px;
-    margin-bottom: 35px;
+    margin-bottom: 22px;
   }
   
-  /* 朗诵句型展示区 */
+  /* 朗诵展示区 */
   .speech-content {
     display: flex;
     flex-direction: column;
-    gap: 28px;
+    gap: 12px;
     align-items: center;
     width: 100%;
   }
   
-  /* 诗歌每行样式 */
+  /* 标准纯汉字朗诵行 (楷书防折行) */
   .speech-line {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    column-gap: 5px;
-    row-gap: 12px;
-    padding: 10px 20px;
-    border-radius: 16px;
+    font-size: 23px;
+    font-weight: 700;
+    font-family: "KaiTi", "STKaiti", "DFKai-SB", "华文楷体", serif;
+    color: var(--text-dark);
+    text-align: center;
+    line-height: 1.6;
+    letter-spacing: 2px;
+    padding: 6px 16px;
+    border-radius: 12px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     width: 100%;
+    max-width: 680px;
     box-sizing: border-box;
+    display: block;
+    white-space: nowrap; /* 默认大屏不换行，保持一气呵成 */
   }
   .speech-line:hover {
-    background: rgba(46, 125, 50, 0.04);
-    transform: translateY(-1px) scale(1.005);
-  }
-  
-  /* 拼音汉字单字框 */
-  .char-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-width: 34px;
-    height: 66px;
-    justify-content: flex-end;
-    position: relative;
-    transition: all 0.3s ease;
-  }
-  
-  .py-text {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--primary-green);
-    font-family: "PingFang SC", "Comic Sans MS", "Arial", sans-serif;
-    height: 22px;
-    line-height: 22px;
-    transition: all 0.3s ease;
-    user-select: none;
-    letter-spacing: 0.5px;
-  }
-  
-  .hz-text {
-    font-size: 26px;
-    font-weight: bold;
-    font-family: "KaiTi", "STKaiti", "DFKai-SB", "华文楷体", serif;
-    color: var(--text-dark);
-    height: 38px;
-    line-height: 38px;
-    transition: color 0.2s ease;
-  }
-  .speech-line:hover .hz-text {
+    background: rgba(46, 125, 50, 0.05);
     color: #1b5e20;
+    transform: translateY(-1.5px) scale(1.01);
+  }
+  .speech-line:active {
+    transform: translateY(0) scale(0.99);
   }
   
-  /* 标点符号独立框 */
-  .symbol-box {
-    display: flex;
-    align-items: flex-end;
-    height: 66px;
-    font-size: 26px;
-    font-weight: bold;
-    font-family: "KaiTi", "STKaiti", "DFKai-SB", "华文楷体", serif;
+  /* 伴奏链接微调面板 (非打印) */
+  .music-setting-drawer {
+    margin-top: 25px;
+    font-size: 11.5px;
     color: var(--text-muted);
-    padding-bottom: 2px;
-    box-sizing: border-box;
-  }
-  
-  /* 隐藏拼音状态 */
-  .hide-pinyin .py-text {
-    opacity: 0;
-    height: 0;
-    transform: translateY(5px);
-    pointer-events: none;
-  }
-  .hide-pinyin .char-box {
-    height: 40px;
-  }
-  .hide-pinyin .symbol-box {
-    height: 40px;
-  }
-  
-
-  
-  /* 伴奏播放器气泡 */
-  .music-widget {
-    background: rgba(253, 254, 254, 0.9);
-    border: 1px solid var(--border-color);
-    border-radius: 20px;
-    padding: 10px 20px;
     display: flex;
-    align-items: center;
-    gap: 12px;
-    box-shadow: var(--shadow-sm);
-  }
-  .music-info {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-dark);
-  }
-  
-  /* iOS 伴奏播放按钮 */
-  .play-btn {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    border: 1px solid var(--primary-green);
-    background: transparent;
-    color: var(--primary-green);
-    display: inline-flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    font-size: 12px;
-    transition: all 0.2s ease;
-    outline: none;
-  }
-  .play-btn:hover {
-    background: var(--primary-green);
-    color: #ffffff;
-  }
-  
-  /* 音乐链接自定义面板 */
-  .music-setting-drawer {
-    margin-top: 15px;
-    font-size: 11px;
-    color: var(--text-muted);
-    display: flex;
-    align-items: center;
     gap: 8px;
+    border-top: 1px dashed rgba(46, 125, 50, 0.08);
+    padding-top: 16px;
   }
   .music-input {
-    border: 1px solid var(--border-color);
-    padding: 3px 8px;
+    border: 1px solid rgba(46, 125, 50, 0.12);
+    padding: 5px 12px;
     border-radius: 12px;
     font-size: 11px;
     outline: none;
-    width: 250px;
+    width: 260px;
+    transition: all 0.2s ease;
+    background: rgba(255, 255, 255, 0.6);
+  }
+  .music-input:focus {
+    border-color: var(--primary-green);
+    background: #ffffff;
+    box-shadow: 0 0 8px rgba(46, 125, 50, 0.08);
   }
   
-  /* 窄屏自适应 */
+  /* 响应式平板及手机排版 */
   @media (max-width: 768px) {
-    .control-bar {
-      display: grid;
-      grid-template-columns: 1fr;
-      padding: 12px 18px;
-      gap: 10px;
-      border-radius: 18px;
+    .container {
+      padding: 12px 10px;
     }
-    .control-bar > * {
-      width: 100%;
-      justify-content: center;
+    .control-bar {
+      border-radius: 16px;
+      padding: 8px 12px;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    .music-widget {
+      height: 32px;
+      padding: 4px 10px;
+    }
+    .bgm-select-el {
+      font-size: 11.5px;
+      padding-right: 14px;
+    }
+    .play-btn {
+      width: 22px;
+      height: 22px;
+      font-size: 8px;
+    }
+    .btn-print {
+      height: 32px;
+      font-size: 11.5px;
+      padding: 0 12px;
     }
     .recitation-card {
-      padding: 25px 15px;
-      border-radius: 20px;
-    }
-    .hz-text {
-      font-size: 22px;
-      height: 32px;
-      line-height: 32px;
-    }
-    .py-text {
-      font-size: 12px;
-      height: 18px;
-      line-height: 18px;
-    }
-    .char-box {
-      min-width: 26px;
-      height: 52px;
-    }
-    .symbol-box {
-      font-size: 22px;
-      height: 52px;
-    }
-    .hide-pinyin .char-box, .hide-pinyin .symbol-box {
-      height: 34px;
+      padding: 25px 20px;
+      border-radius: 18px;
     }
     .decor-img {
-      width: 180px;
-      height: 180px;
+      width: 120px;
+      height: 120px;
+    }
+    .title-area h1 {
+      font-size: 22px;
+      letter-spacing: 2px;
+    }
+    .subtitle {
+      font-size: 12px;
+    }
+    .speech-line {
+      font-size: 18px;
+      white-space: normal; /* 窄屏移动设备允许其在词组间折行，防止溢出 */
+      word-break: keep-all;
+      overflow-wrap: break-word;
+      line-height: 1.5;
+      padding: 4px 10px;
     }
     .music-input {
       width: 100%;
+      max-width: 200px;
     }
   }
   
-  /* 针对 A4 打印深度优化 */
+  /* 🖨️ 针对 A4 纸张 100% 单页完美打印的物理级极致空间调优 🖨️ */
   @media print {
+    @page {
+      size: A4 portrait;
+      margin: 0.8cm 1.2cm 0.6cm 1.2cm; /* 精巧页边距，防溢出 */
+    }
     body {
       background: #ffffff !important;
       color: #000000 !important;
+      height: 100% !important;
+      overflow: hidden !important;
     }
     .no-print {
       display: none !important;
@@ -411,31 +354,61 @@
     .container {
       padding: 0 !important;
       max-width: 100% !important;
+      margin: 0 !important;
+      height: 100% !important;
     }
     .recitation-card {
       box-shadow: none !important;
       border: none !important;
-      padding: 10px 0 !important;
+      padding: 0 !important;
       background: transparent !important;
+      transition: none !important;
+      height: 100% !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: center !important;
+    }
+    .header-decor {
+      margin-bottom: 8px !important;
     }
     .decor-img {
-      width: 180px !important;
-      height: 180px !important;
-      margin-bottom: 12px !important;
+      width: 110px !important; /* 插图等比例微雕缩窄，腾出海量垂直空间 */
+      height: 110px !important;
+      margin-bottom: 4px !important;
+      box-shadow: none !important;
     }
-    .hz-text {
+    .title-area h1 {
+      font-size: 21px !important; /* 合谐大气字号 */
+      letter-spacing: 3px !important;
+      margin: 0 0 2px 0 !important;
+      background: none !important;
+      -webkit-text-fill-color: initial !important;
       color: #000000 !important;
-      font-family: "KaiTi", "STKaiti", "DFKai-SB", "华文楷体", serif !important;
     }
-    .py-text {
-      color: #1b5e20 !important;
+    .subtitle {
+      font-size: 12px !important;
+      margin-bottom: 4px !important;
+      color: #333333 !important;
+    }
+    .ribbon {
+      margin-bottom: 12px !important;
+      height: 2px !important;
+    }
+    .speech-content {
+      gap: 6px !important; /* 压缩行间距，寸土必争，杜绝跨页 */
+      justify-content: center !important;
     }
     .speech-line {
-      padding: 4px 10px !important;
-      margin-bottom: 6px !important;
+      font-size: 19.5px !important; /* A4 极佳识读尺寸，适合一年级孩子指读 */
+      padding: 1px 0 !important;
+      color: #000000 !important;
+      line-height: 1.35 !important;
+      letter-spacing: 1.5px !important;
+      white-space: nowrap !important; /* 物理打印 100% 单行横排防折行，绝对端庄工整 */
+      background: transparent !important;
+      transform: none !important;
       page-break-inside: avoid !important;
     }
-
   }
 </style>
 </head>
@@ -443,67 +416,59 @@
 
 <div class="container">
   
-  <!-- 顶栏控制中心 (非打印) -->
+  <!-- 顶栏悬浮胶囊控制台 (非打印) -->
   <div class="control-bar no-print">
+    <!-- 伴奏播放与轨道切换 -->
     <div class="control-group">
-      <!-- 拼音显隐滑块 -->
-      <div class="toggle-container">
-        <div class="toggle-tab active" id="tab-py-show" onclick="setPinyinMode('show')">💬 显示拼音</div>
-        <div class="toggle-tab" id="tab-py-hide" onclick="setPinyinMode('hide')">🔤 纯汉字模式</div>
-      </div>
-      
-      <!-- 伴奏播放控件 -->
       <div class="music-widget">
         <button class="play-btn" id="play-btn" onclick="togglePlay()">▶</button>
-        <select id="bgm-select" onchange="changeBGM(this.value)" style="border:none; background:transparent; font-size:12.5px; font-weight:700; color:var(--text-dark); cursor:pointer; outline:none; padding-right:15px; appearance:none; background: url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%232c3e50\' stroke-width=\'2.5\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Cpath d=\'m6 9 6 6 6-6\'/%3E%3C/svg%3E') no-repeat right center; background-size: 10px;">
-          <option value="bgm-default">🎵 默认伴奏：《月之故乡》B站原声 (极力推荐)</option>
-          <option value="bgm-meng_huan">🎵 备用 1：舒曼《梦幻曲》 (极致安静)</option>
-          <option value="bgm-yue_guang">🎵 备用 2：贝多芬《月光第一乐章》 (静谧月夜)</option>
-          <option value="bgm-ye_qu">🎵 备用 3：肖邦《夜曲》 (唯美温柔舒缓)</option>
+        <select id="bgm-select" class="bgm-select-el" onchange="changeBGM(this.value)">
+          <option value="bgm-default">🎵 默认伴奏：《月之故乡》B站原声 (首推)</option>
+          <option value="bgm-meng_huan">🎵 备用 1：舒曼《梦幻曲》 (清幽安静)</option>
+          <option value="bgm-yue_guang">🎵 备用 2：贝多芬《月光》 (静谧如水)</option>
+          <option value="bgm-ye_qu">🎵 备用 3：肖邦《夜曲》 (温柔舒缓诗意)</option>
         </select>
       </div>
     </div>
     
+    <!-- 打印功能 -->
     <div class="control-group">
-      <!-- 一键打印 -->
-      <button class="btn btn-primary" onclick="window.print()">
+      <button class="btn-print" onclick="window.print()">
         🖨️ 一键打印 A4 朗诵稿
       </button>
     </div>
   </div>
 
-  <!-- 朗诵练习稿主卡片 -->
+  <!-- 朗诵卡片 -->
   <div class="recitation-card" id="recitation-card">
     
-    <!-- 头部精美配图 -->
+    <!-- 头部插图与标题 -->
     <div class="header-decor">
-      <!-- 嵌入高拟真“彩色的中国”水彩画，打印模式自动保留 -->
       <img src="colorful_china.png" alt="彩色的中国" class="decor-img">
       
       <div class="title-area">
         <h1>彩色的中国</h1>
-        <div class="subtitle">王悦菡 —— 一年级九班 朗诵练习</div>
+        <div class="subtitle">王悦菡 —— 一年级九班 朗诵练习卷</div>
       </div>
     </div>
     
-    <!-- 分割彩带线 -->
+    <!-- 七彩分割线 -->
     <div class="ribbon"></div>
     
-    <!-- 诗意朗诵句型区 (JS 动态解析注音并在这里渲染) -->
+    <!-- 纯汉字句子展示区 -->
     <div class="speech-content" id="speech-content"></div>
     
-
-    <!-- 伴奏自定义微调 (非打印) -->
+    <!-- MP3 地址微调抽屉 (非打印) -->
     <div class="music-setting-drawer no-print">
-      <span>更换伴奏链接 (MP3)：</span>
-      <input type="text" class="music-input" id="custom-music-url" placeholder="粘贴新的网络MP3伴奏地址，按回车生效" onchange="changeMusicUrl(this.value)">
+      <span>更换专属伴奏 (MP3)：</span>
+      <input type="text" class="music-input" id="custom-music-url" placeholder="粘贴网络 MP3 伴奏链接，按回车切换" onchange="changeMusicUrl(this.value)">
     </div>
     
   </div>
 
 </div>
 
-<!-- 伴奏音频元素 (多轨并行，完美应对 iOS 音频解锁) -->
+<!-- 伴奏音频元素 (多轨并行，打通 iOS WebKit 解锁安全线) -->
 <audio id="bgm-default" src="yue_zhi_gu_xiang.mp3" loop preload="auto"></audio>
 <audio id="bgm-meng_huan" src="https://music.163.com/song/media/outer/url?id=5256241.mp3" loop preload="auto"></audio>
 <audio id="bgm-yue_guang" src="https://music.163.com/song/media/outer/url?id=26237341.mp3" loop preload="auto"></audio>
@@ -511,7 +476,7 @@
 <audio id="bgm-custom" loop preload="auto"></audio>
 
 <script>
-// 朗诵词数据结构 (已贴心订正错别字并作出了排版美化)
+// 悦菡朗诵文本 (经过字词纠偏与完美句读排版)
 const lines = [
   "大家好。我是一年级九班的王悦菡。",
   "我朗诵的作品是彩色的中国。",
@@ -526,13 +491,13 @@ const lines = [
 
 let currentBGMId = 'bgm-default';
 
-// 初始化伴奏地址
+// 自定义伴奏本地初始化
+const bgMusicDefault = document.getElementById('bgm-default');
 const customUrlInput = document.getElementById('custom-music-url');
 const storedMusicUrl = localStorage.getItem('recitation_bg_music_url');
 if (storedMusicUrl) {
   customUrlInput.value = storedMusicUrl;
   
-  // 页面加载完成后追加自定义选项并选中它
   window.addEventListener('DOMContentLoaded', () => {
     const customAud = document.getElementById('bgm-custom');
     if (customAud) {
@@ -550,7 +515,7 @@ if (storedMusicUrl) {
   });
 }
 
-// 动态拼音解析渲染逻辑
+// 渲染标准纯汉字字行 (绝不碎裂、杜绝拼音错行)
 window.onload = () => {
   const contentEl = document.getElementById('speech-content');
   
@@ -559,73 +524,23 @@ window.onload = () => {
     lineEl.className = 'speech-line';
     lineEl.title = "点击播放本句标准跟读发音";
     lineEl.onclick = () => speakSentence(line);
-    
-    // 调用 pinyin-pro 动态提取整句汉字的连贯上下文拼音数组
-    let pinyins = [];
-    if (typeof pinyinPro !== 'undefined' && typeof pinyinPro.pinyin === 'function') {
-      pinyins = pinyinPro.pinyin(line, { type: 'array', toneSandhi: true });
-    }
-    
-    // 逐字扫描字符串，生成完美的汉字-拼音配对框
-    for (let i = 0; i < line.length; i++) {
-      const char = line[i];
-      if (/[\u4e00-\u9fa5]/.test(char)) {
-        const charBox = document.createElement('div');
-        charBox.className = 'char-box';
-        
-        const pyEl = document.createElement('span');
-        pyEl.className = 'py-text';
-        // 依次从拼音数组里弹出一个，完美配对
-        pyEl.innerText = pinyins.shift() || '';
-        
-        const hzEl = document.createElement('span');
-        hzEl.className = 'hz-text';
-        hzEl.innerText = char;
-        
-        charBox.appendChild(pyEl);
-        charBox.appendChild(hzEl);
-        lineEl.appendChild(charBox);
-      } else {
-        // 标点符号或空格原样输出
-        const symBox = document.createElement('div');
-        symBox.className = 'symbol-box';
-        symBox.innerText = char;
-        lineEl.appendChild(symBox);
-      }
-    }
+    lineEl.innerText = line; // 纯汉字，流利顺滑
     contentEl.appendChild(lineEl);
   });
 };
 
-// 拼音显示隐藏切换
-function setPinyinMode(mode) {
-  const card = document.getElementById('recitation-card');
-  const tabShow = document.getElementById('tab-py-show');
-  const tabHide = document.getElementById('tab-py-hide');
-  if (mode === 'show') {
-    card.classList.remove('hide-pinyin');
-    tabShow.classList.add('active');
-    tabHide.classList.remove('active');
-  } else {
-    card.classList.add('hide-pinyin');
-    tabShow.classList.remove('active');
-    tabHide.classList.add('active');
-  }
-}
-
-// iOS Web Speech API 朗诵示范
+// Web Speech API 标准慢速跟读示范
 function speakSentence(text) {
   if ('speechSynthesis' in window) {
     window.speechSynthesis.cancel();
     
-    // 去掉标点，纯汉字发音会更连贯自然
+    // 去掉符号，只留汉字，保证语音连贯舒缓
     const cleanText = text.replace(/[^\u4e00-\u9fa5]/g, '');
     const utter = new SpeechSynthesisUtterance(cleanText);
     utter.lang = 'zh-CN';
-    utter.rate = 0.78; // 微微缓慢的朗诵速度，极利于一年级悦菡纠音跟读
-    utter.pitch = 1.1; // 稍微亮丽的声调，展现孩子蓬勃的朝气
+    utter.rate = 0.76; // 精准微调至 0.76 倍慢速，便于悦菡进行字句纠音与揣摩节奏
+    utter.pitch = 1.12; // 略微提亮，声音清脆悦耳
     
-    // 音量平衡保护，避免盖住或卡死
     window.speechSynthesis.speak(utter);
   }
 }
@@ -638,7 +553,7 @@ function togglePlay() {
   if (!activeAud) return;
   
   if (activeAud.paused) {
-    // 播放前，确保其他所有轨道都是暂停状态
+    // 播放前，确保其他所有背景音乐全部暂停
     document.querySelectorAll('audio').forEach(aud => {
       if (aud.id !== currentBGMId) {
         aud.pause();
@@ -648,70 +563,114 @@ function togglePlay() {
     activeAud.volume = 0.25;
     activeAud.play().then(() => {
       btn.innerText = '⏸';
-      btn.style.background = 'var(--primary-green)';
-      btn.style.color = '#ffffff';
+      btn.style.background = '#d32f2f'; // 播放时呈现温暖红，代表暂停
+      btn.style.boxShadow = '0 2px 6px rgba(211, 47, 47, 0.2)';
     }).catch(e => {
       console.warn("Audio play failed:", e);
-      alert("播放失败！请在屏幕上任意处点按一次解锁声音，并确保您的 iPad 音量已打开。");
+      alert("播放失败！请点击屏幕任意处解锁音频限制，并确保设备非静音状态。");
     });
   } else {
     activeAud.pause();
     btn.innerText = '▶';
-    btn.style.background = 'transparent';
-    btn.style.color = 'var(--primary-green)';
+    btn.style.background = 'var(--primary-green)'; // 暂停状态绿色，表示播放
+    btn.style.boxShadow = '0 2px 6px rgba(46, 125, 50, 0.2)';
   }
 }
 
-// 切换预设伴奏
-function changeBGM(url) {
+// 切换伴奏轨道
+function changeBGM(id) {
   const btn = document.getElementById('play-btn');
-  bgMusic.src = url;
-  bgMusic.load();
-  if (btn.innerText === '⏸') {
-    bgMusic.play().catch(e => console.warn(e));
+  const isPlaying = (btn.innerText === '⏸');
+  
+  // 1. 停止当前正在播放的所有背景音乐，并将时间重置为 0
+  const audios = document.querySelectorAll('audio');
+  audios.forEach(aud => {
+    aud.pause();
+    aud.currentTime = 0;
+  });
+  
+  currentBGMId = id;
+  
+  // 2. 如果切换前正在播放，切换后立即播放新轨道
+  if (isPlaying) {
+    const activeAud = document.getElementById(currentBGMId);
+    if (activeAud) {
+      activeAud.volume = 0.25;
+      activeAud.play().catch(e => {
+        console.warn("Change BGM play failed:", e);
+      });
+    }
   }
 }
 
-// 自定义伴奏 MP3 更改
+// 自定义专属 MP3 链接载入
 function changeMusicUrl(url) {
   if (url.trim()) {
-    bgMusic.src = url.trim();
-    localStorage.setItem('recitation_bg_music_url', url.trim());
-    bgMusic.load();
-    if (document.getElementById('play-btn').innerText === '⏸') {
-      bgMusic.play().catch(e => console.warn(e));
-    }
-    
-    // 动态添加一个自定义项到下拉框中并选中
-    const selectEl = document.getElementById('bgm-select');
-    if (selectEl) {
-      let hasCustom = false;
-      for (let i = 0; i < selectEl.options.length; i++) {
-        if (selectEl.options[i].value === url.trim()) {
-          hasCustom = true;
-          selectEl.selectedIndex = i;
-          break;
+    const customAud = document.getElementById('bgm-custom');
+    if (customAud) {
+      customAud.src = url.trim();
+      customAud.load();
+      localStorage.setItem('recitation_bg_music_url', url.trim());
+      
+      const selectEl = document.getElementById('bgm-select');
+      if (selectEl) {
+        let hasCustom = false;
+        for (let i = 0; i < selectEl.options.length; i++) {
+          if (selectEl.options[i].value === 'bgm-custom') {
+            hasCustom = true;
+            selectEl.selectedIndex = i;
+            break;
+          }
+        }
+        if (!hasCustom) {
+          const opt = document.createElement('option');
+          opt.value = 'bgm-custom';
+          opt.innerText = "🎵 自定义专属伴奏";
+          selectEl.appendChild(opt);
+          selectEl.value = 'bgm-custom';
         }
       }
-      if (!hasCustom) {
-        const opt = document.createElement('option');
-        opt.value = url.trim();
-        opt.innerText = "🎵 自定义专属伴奏";
-        selectEl.appendChild(opt);
-        selectEl.value = url.trim();
-      }
+      
+      changeBGM('bgm-custom');
     }
   }
 }
 
-// ⭐ iOS Web Speech & HTML5 Audio 一次性交互解锁 ⭐
+// ⭐ iOS 联合解锁机制：在首次任意点击中静音播放所有轨道，强行取得 WebKit 播放许可证 ⭐
+let isUnlocked = false;
 function unlockIOSRecitation() {
+  if (isUnlocked) return;
+  
+  // 1. 解锁 Web Speech
   if ('speechSynthesis' in window) {
-    const unlockUtter = new SpeechSynthesisUtterance(' ');
-    unlockUtter.volume = 0;
-    window.speechSynthesis.speak(unlockUtter);
+    try {
+      const unlockUtter = new SpeechSynthesisUtterance(' ');
+      unlockUtter.volume = 0;
+      window.speechSynthesis.speak(unlockUtter);
+    } catch(e){}
   }
-  bgMusic.load();
+  
+  // 2. 静音联合打通所有音频通道
+  const audios = document.querySelectorAll('audio');
+  audios.forEach(aud => {
+    try {
+      const origVol = aud.volume;
+      aud.volume = 0;
+      if (aud.src || aud.id === 'bgm-custom') {
+        const p = aud.play();
+        if (p !== undefined) {
+          p.then(() => {
+            aud.pause();
+            aud.volume = origVol || 0.25;
+          }).catch(err => console.warn("Unlock track failed:", aud.id, err));
+        }
+      }
+    } catch (e) {
+      console.warn(e);
+    }
+  });
+  
+  isUnlocked = true;
   document.body.removeEventListener('click', unlockIOSRecitation);
   document.body.removeEventListener('touchstart', unlockIOSRecitation);
 }
