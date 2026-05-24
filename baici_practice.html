@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>一年级下册（第四至七单元）百词大赛通关练习卷</title>
+<!-- 智能拼音转换引擎 (用于纯汉字输入自动注音) -->
+<script src="https://cdn.jsdelivr.net/npm/pinyin-pro@3.18.2/dist/index.js"></script>
 <style>
   /* 莫兰迪设计系统变量 */
   :root {
@@ -108,16 +110,16 @@
     text-align: center;
   }
 
-  /* 悬浮控制面板 */
+  /* 苹果控制中心风格控制面板 */
   .control-panel {
     background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255,255,255,0.5);
-    border-radius: 16px;
-    padding: 15px 20px;
-    margin-bottom: 30px;
-    box-shadow: var(--shadow-lg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 24px;
+    padding: 12px 24px;
+    margin-bottom: 35px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -126,47 +128,139 @@
     position: sticky;
     top: 15px;
     z-index: 100;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .control-group {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    flex-wrap: wrap;
   }
-  .btn {
-    background: var(--card-bg);
-    color: var(--primary-color);
-    border: 1px solid var(--border-color);
-    padding: 8px 16px;
-    border-radius: 8px;
+  
+  /* 苹果 Tab 切换器 */
+  .mode-switcher {
+    background: #f3f4f6;
+    padding: 3px;
+    border-radius: 20px;
+    display: inline-flex;
+    gap: 2px;
+    border: 1px solid #e5e7eb;
+  }
+  .mode-tab {
+    padding: 6px 18px;
+    border-radius: 18px;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #4b5563;
     cursor: pointer;
-    font-size: 14px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    user-select: none;
+  }
+  .mode-tab.active {
+    background: #ffffff;
+    color: var(--green-line);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+
+  /* 极致高雅胶囊式下拉框 */
+  #unit-select {
+    appearance: none;
+    background: #ffffff url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2334495e' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center;
+    background-size: 14px;
+    padding: 8px 36px 8px 18px !important;
+    border-radius: 20px;
+    border: 1px solid #e5e7eb;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--primary-color);
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+  }
+  #unit-select:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+  }
+
+  /* 极致高雅胶囊按钮 */
+  .btn {
+    background: #ffffff;
+    color: #374151;
+    border: 1px solid #e5e7eb;
+    padding: 8px 18px;
+    border-radius: 20px; /* 胶囊圆角 */
+    cursor: pointer;
+    font-size: 13.5px;
     font-weight: 600;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 6px;
-    transition: all 0.2s ease;
-    box-shadow: var(--shadow-sm);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+    outline: none;
   }
   .btn:hover {
     border-color: var(--primary-color);
+    color: var(--primary-color);
+    background: rgba(46, 125, 50, 0.02);
     transform: translateY(-1px);
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 4px 10px rgba(46, 125, 50, 0.06);
   }
-  .btn.active {
-    background: var(--primary-color);
-    color: #ffffff;
-    border-color: var(--primary-color);
-  }
+  
   .btn-accent {
-    background: var(--accent-color);
+    background: linear-gradient(135deg, var(--accent-color), #6c3483);
     color: #ffffff;
-    border-color: var(--accent-color);
+    border: none;
+    box-shadow: 0 4px 12px rgba(136, 78, 160, 0.15);
   }
   .btn-accent:hover {
-    background: #7d3c98;
-    border-color: #7d3c98;
+    background: linear-gradient(135deg, #7d3c98, #5b2c6f);
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(136, 78, 160, 0.25);
   }
+  
+  .btn-primary {
+    background: linear-gradient(135deg, #2e7d32, #1b5e20);
+    color: #ffffff;
+    border: none;
+    box-shadow: 0 4px 12px rgba(46, 125, 50, 0.15);
+  }
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #388e3c, #1b5e20);
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(46, 125, 50, 0.25);
+  }
+  
+  /* 在窄屏下自动转为精美规整网格 */
+  @media (max-width: 992px) {
+    .control-panel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding: 16px;
+      gap: 12px;
+      border-radius: 20px;
+    }
+    .control-panel > * {
+      width: 100%;
+    }
+    .control-group {
+      justify-content: center;
+      width: 100%;
+    }
+  }
+  @media (max-width: 650px) {
+    .control-panel {
+      grid-template-columns: 1fr;
+    }
+  }
+
   .badge {
     background: #eaf2f8;
     color: #2980b9;
@@ -781,14 +875,14 @@
     
     <div class="input-label">📝 输入生词库文本</div>
     <textarea class="drawer-textarea" id="custom-input" placeholder='极度宽容！支持任何混合格式粘贴，例如：
-1. 拼音汉字混排（用空格或标点）：
+1. 🌟最省心：只贴纯汉字（系统连网后将一秒全自动自动注音！）：
+   思乡 床前 低头 故乡 已经 非常
+   
+2. 拼音汉字混排（用空格或标点）：
    sī xiāng 思乡 chuáng qián 床前 dī tóu 低头
    
-2. 括号说明格式：
-   思乡(sī xiāng) 床前(chuáng qián)
-   
 3. 微信通知或带序号的文本（直接粘贴）：
-   本单元词语听写：1. 思乡 (sī xiāng) 2. 床前 (chuáng qián)'></textarea>
+   今日词语听写：1. 思乡 (sī xiāng) 2. 床前 (chuáng qián)'></textarea>
     
     <div style="display: flex; gap: 10px; margin-top: 15px;">
       <button class="btn btn-accent" style="flex: 1; justify-content: center;" onclick="parseAndGenerate()">✨ 立即解析生成</button>
@@ -804,19 +898,18 @@
   <!-- 控制面板 (非打印) -->
   <div class="control-panel no-print">
     <div class="control-group">
-      <button class="btn active" id="btn-student" onclick="setMode('student')">
-        ✏️ 学生练习模式
-      </button>
-      <button class="btn" id="btn-teacher" onclick="setMode('teacher')">
-        🔍 教师批改模式 (显答案)
-      </button>
-      <button class="btn btn-accent" id="btn-shuffle" onclick="shuffleCurrentWords()" title="打乱当前生字听写的顺序，生成全新考题">
+      <div class="mode-switcher">
+        <div class="mode-tab active" id="tab-student" onclick="setMode('student')">✏️ 学生练习模式</div>
+        <div class="mode-tab" id="tab-teacher" onclick="setMode('teacher')">🔍 教师批改模式</div>
+      </div>
+      
+      <button class="btn" id="btn-shuffle" onclick="shuffleCurrentWords()" title="打乱当前生字听写的顺序，生成全新考题">
         🎲 一键乱序重组
       </button>
     </div>
     
     <div class="control-group">
-      <select id="unit-select" class="btn" onchange="filterUnit(this.value)" style="padding-right: 25px;">
+      <select id="unit-select" onchange="filterUnit(this.value)">
         <option value="all">⭐ 综合百词大赛 (全覆盖)</option>
         <option value="4">第四单元 (31词)</option>
         <option value="5">第五单元 (43词)</option>
@@ -828,7 +921,7 @@
         ⚙️ 自定义出题
       </button>
       
-      <button class="btn btn-accent" onclick="window.print()">
+      <button class="btn btn-primary" onclick="window.print()">
         🖨️ 一键打印 A4 练习卷
       </button>
     </div>
@@ -1317,13 +1410,13 @@ function renderStage1(filter = 'all') {
 // 模式切换
 function setMode(mode) {
   const body = document.body;
-  const btnStudent = document.getElementById('btn-student');
-  const btnTeacher = document.getElementById('btn-teacher');
+  const btnStudent = document.getElementById('tab-student');
+  const btnTeacher = document.getElementById('tab-teacher');
   
   if (mode === 'student') {
     body.className = 'student-mode';
-    btnStudent.classList.add('active');
-    btnTeacher.classList.remove('active');
+    if (btnStudent) btnStudent.classList.add('active');
+    if (btnTeacher) btnTeacher.classList.remove('active');
     
     // 清空下拉框和输入框的“用户填写”状态（保留答案的空值）
     document.querySelectorAll('.select-ans').forEach(sel => {
@@ -1338,8 +1431,8 @@ function setMode(mode) {
     });
   } else {
     body.className = 'teacher-mode';
-    btnStudent.classList.remove('active');
-    btnTeacher.classList.add('active');
+    if (btnStudent) btnStudent.classList.remove('active');
+    if (btnTeacher) btnTeacher.classList.add('active');
     
     // 自动填充标准答案
     fillTeacherAnswers();
@@ -1735,7 +1828,7 @@ function parseAndGenerate() {
     }
   } catch (e) {}
   
-  // 2. 超强两阶段智能分词提取算法
+  // 2. 超强智能分词与自动注音算法
   if (parsedWords.length === 0) {
     const charRegex = /[\u4e00-\u9fa5]+/g;
     const pinyinRegex = /[a-zA-Zāáǎàōóǒòēéěèīíǐìūúǔùüǘǚǜüāáǎàōóǒòēéěèīíǐìūúǔùüǘǚǜńňǹ\s]+/g;
@@ -1764,36 +1857,55 @@ function parseAndGenerate() {
       }
     }
     
-    let pairedPinyins = new Set();
-    let pairedChars = new Set();
-    
-    // 第一阶段：邻近位置匹配 (针对“拼音汉字交替混排”、“括号混排”、“逗号混排”等)
-    chars.forEach(c => {
-      let bestPinyin = null;
-      let minDist = 999999;
-      pinyins.forEach(p => {
-        if (pairedPinyins.has(p)) return;
-        let dist = Math.abs(c.index - p.index);
-        // 如果拼音和汉字的起止位置在 30 个字符以内，通常判定为同一组词语
-        if (dist < minDist && dist < 30) {
-          minDist = dist;
-          bestPinyin = p;
+    // ⭐ 特色功能：如果输入的绝大部分是汉字且拼音数量极少，则自动调用 CDN 拼音引擎自动注音！
+    if (chars.length > 0 && pinyins.length < chars.length * 0.5) {
+      if (typeof pinyinPro !== 'undefined' && typeof pinyinPro.pinyin === 'function') {
+        chars.forEach(c => {
+          let py = pinyinPro.pinyin(c.text, { toneSandhi: true });
+          if (py) {
+            parsedWords.push([py, c.text]);
+          }
+        });
+      } else {
+        msgEl.style.display = 'block';
+        msgEl.style.backgroundColor = '#fadbd8';
+        msgEl.style.color = '#78281f';
+        msgEl.style.border = '1px solid #f5b041';
+        msgEl.innerText = "❌ 检测到您输入的是纯汉字，但智能自动注音引擎尚未在当前环境成功加载（通常因为离线或网络稍慢）。请保持连网稍等几秒后重试，或直接粘贴拼音和汉字混排格式文本。";
+        return;
+      }
+    } else {
+      // 正常的两阶段拼音汉字配对逻辑
+      let pairedPinyins = new Set();
+      let pairedChars = new Set();
+      
+      // 第一阶段：邻近位置匹配 (针对“拼音汉字交替混排”、“括号混排”、“逗号混排”等)
+      chars.forEach(c => {
+        let bestPinyin = null;
+        let minDist = 999999;
+        pinyins.forEach(p => {
+          if (pairedPinyins.has(p)) return;
+          let dist = Math.abs(c.index - p.index);
+          if (dist < minDist && dist < 30) {
+            minDist = dist;
+            bestPinyin = p;
+          }
+        });
+        if (bestPinyin) {
+          parsedWords.push([bestPinyin.text, c.text]);
+          pairedPinyins.add(bestPinyin);
+          pairedChars.add(c);
         }
       });
-      if (bestPinyin) {
-        parsedWords.push([bestPinyin.text, c.text]);
-        pairedPinyins.add(bestPinyin);
-        pairedChars.add(c);
+      
+      // 第二阶段：顺序对齐配对 (针对“前半截纯拼音列表，后半截纯汉字列表”等极特殊排版)
+      let remainingChars = chars.filter(c => !pairedChars.has(c));
+      let remainingPinyins = pinyins.filter(p => !pairedPinyins.has(p));
+      
+      let limit = Math.min(remainingChars.length, remainingPinyins.length);
+      for (let i = 0; i < limit; i++) {
+        parsedWords.push([remainingPinyins[i].text, remainingChars[i].text]);
       }
-    });
-    
-    // 第二阶段：顺序对齐配对 (针对“前半截纯拼音列表，后半截纯汉字列表”等极特殊排版)
-    let remainingChars = chars.filter(c => !pairedChars.has(c));
-    let remainingPinyins = pinyins.filter(p => !pairedPinyins.has(p));
-    
-    let limit = Math.min(remainingChars.length, remainingPinyins.length);
-    for (let i = 0; i < limit; i++) {
-      parsedWords.push([remainingPinyins[i].text, remainingChars[i].text]);
     }
   }
   
@@ -1803,7 +1915,7 @@ function parseAndGenerate() {
     msgEl.style.backgroundColor = '#fadbd8';
     msgEl.style.color = '#78281f';
     msgEl.style.border = '1px solid #f5b041';
-    msgEl.innerText = "❌ 智能解析失败！请确保粘贴的文本中【同时包含拼音与汉字】。例如直接复制微信通知里的：'sī xiāng 思乡 chuáng qián 床前' 即可。";
+    msgEl.innerText = "❌ 智能解析失败！请确保粘贴的文本中【包含汉字或拼音】。例如直接输入纯汉字：'思乡 床前 低头'，系统将一键全自动注音！";
     return;
   }
   
